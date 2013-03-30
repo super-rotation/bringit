@@ -2,12 +2,12 @@ var win = Titanium.UI.currentWindow;
 
 var tableView = Titanium.UI.createTableView();
 
-var destLists = [{name: '実家'}, {name:'スノーボード'}, {name:'聖地巡礼'}];
-for (var i=0; i<destLists.length; i++) {
-	var destList = destLists[i];
-	var row = Titanium.UI.createTableViewRow({hasDetail: true});
+var items = [{name: '歯ブラシ'}, {name:'タオル'}, {name: '洗顔フォーム'}, {name: 'コンタクトレンズ'}];
+for (var i=0; i<items.length; i++) {
+	var item = items[i];
+	var row = Titanium.UI.createTableViewRow();
 	row.add(Titanium.UI.createLabel({
-		text: destList.name,
+		text: item.name,
 		top: 10,
 		left: 10,
 		width: 300,
@@ -22,7 +22,7 @@ var addButton = Ti.UI.createButton({
 addButton.addEventListener('click', function () {
 	var addWindow = Ti.UI.createWindow({
 		url: 'add.js',
-		title: '行き先を追加',
+		title: 'アイテムを追加',
 		backgroundColor: '#fff'
 	});
 	Titanium.UI.currentTab.open(addWindow);
@@ -30,12 +30,10 @@ addButton.addEventListener('click', function () {
 win.rightNavButton = addButton;
 
 tableView.addEventListener('click', function(e) {
-	var checklistWindow = Titanium.UI.createWindow({
-		url: 'checklist.js',
-		checklist_id: e.index,
-		title: destLists[e.index].name
-	});
-	Titanium.UI.currentTab.open(checklistWindow);
+	//アイテムが選択された時の処理
 });
 
 win.add(tableView);
+
+
+
