@@ -17,7 +17,7 @@ var addNewListButton = Titanium.UI.createButton({
     right: 10,
     width: 100,
     height: 44,
-    title: '行き先を追加'
+    title: '追加'
 });
 
 addNewListButton.addEventListener('click', function() {

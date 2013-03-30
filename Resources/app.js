@@ -47,7 +47,7 @@ if (Ti.version < 1.8 ) {
 
 var tabGroup = Titanium.UI.createTabGroup();
 var win = Titanium.UI.createWindow({
-	title: '持ち物リスト',
+	title: '用途',
 	backgroundColor: '#fff',
 	url: 'win.js'
 });
