@@ -27,7 +27,8 @@ var addNewListButton = Titanium.UI.createButton({
 addNewListButton.addEventListener('click', function() {
     if(textArea.value){
         db.addDestination(textArea.value);
-        win.close();
+        win.refresh(win.tableView);
+        win.close({animated: true});
     }
 });
 

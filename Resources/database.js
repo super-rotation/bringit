@@ -67,6 +67,7 @@ var bringitDB = function(){
 	};
 
 	this.open();
+//	this.db.execute('DROP TABLE destination');
 	this.db.execute('CREATE TABLE IF NOT EXISTS destination (destination_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL)');
 	this.insertInitialData();
 	this.close();
