@@ -1,5 +1,9 @@
 var win = Titanium.UI.currentWindow;
 
+Titanium.include('database.js');
+
+var db = new bringitDB();
+
 var textArea = Titanium.UI.createTextArea({
     height: 150,
     width: 300,
@@ -21,7 +25,10 @@ var addNewListButton = Titanium.UI.createButton({
 });
 
 addNewListButton.addEventListener('click', function() {
-    win.close();
+    if(textArea.value){
+        db.addDestination(textArea.value);
+        win.close();
+    }
 });
 
 win.add(addNewListButton);

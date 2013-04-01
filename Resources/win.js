@@ -6,11 +6,11 @@ Titanium.include('database.js');
 
 var db = new bringitDB();
 
-var destLists = db.selectAll();
+var destLists = db.selectAllDestination();
 
 for (var i=0; i<destLists.length; i++) {
 	var destList = destLists[i];
-	var row = Titanium.UI.createTableViewRow({hasDetail: true});
+	var row = Titanium.UI.createTableViewRow({hasChild: true});
 	row.add(Titanium.UI.createLabel({
 		text: destList.name,
 		top: 10,
