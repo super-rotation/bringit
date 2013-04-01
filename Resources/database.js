@@ -20,10 +20,10 @@ var bringitDB = function(){
 		if(!rows.field(0)){
 			var now = this.getUnixtime();
 			var res = this.db.execute(
-				'INSERT INTO destination (name, created_at, updated_at) VALUES(?, ?, ?), (?, ?, ?), (?, ?, ?)',
-				'実家', now, now,
-				'スノーボード', now, now,
-				'聖地巡礼', now, now
+				'INSERT INTO destination (destination_id, name, created_at, updated_at) VALUES(?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)',
+				10000, '実家', now, now,
+				10001, 'スノーボード', now, now,
+				10002, '聖地巡礼', now, now
 			);
 			Ti.API.debug('Add to DB');
 		}
@@ -37,7 +37,7 @@ var bringitDB = function(){
 		var res = [];
 		while(rows.isValidRow()){
 			var destObj = {};
-			destObj.id = rows.fieldByName('destination_id');
+			destObj.destination_id = rows.fieldByName('destination_id');
 			destObj.name = rows.fieldByName('name');
 			var creationDate = new Date(rows.fieldByName('created_at'));
 			destObj.created_at = creationDate.toLocaleString();
@@ -61,7 +61,20 @@ var bringitDB = function(){
 			'INSERT INTO destination (name, created_at, updated_at) VALUES (?, ?, ?)',
 			destinationName, now, now
 		);
-		Ti.API.debug('Add to DB');
+		Ti.API.debug('Add to destination');
+		this.close();
+		return true;
+	};
+
+	this.deleteDestination = function(destination_id){
+		this.open();
+		this.db.execute('begin transaction');
+		this.db.execute(
+			'DELETE FROM destination where destination_id = ?',
+			destination_id
+		);
+		this.db.execute('commit');
+		Ti.API.debug('delete from destination');
 		this.close();
 		return true;
 	};

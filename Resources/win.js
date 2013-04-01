@@ -1,6 +1,6 @@
 var win = Titanium.UI.currentWindow;
 
-var tableView = Titanium.UI.createTableView();
+var tableView = Titanium.UI.createTableView({editable: true});
 
 Titanium.include('database.js');
 var db = new bringitDB();
@@ -20,6 +20,9 @@ var refresh = function(tableView){
 			width: 300,
 			height: 'auto'
 		}));
+		Ti.API.info('-------------destlist----------------');
+		Ti.API.info(destList);
+		row.destination_id = destList.destination_id;
 		tableView.appendRow(row);
 	}
 };
@@ -48,6 +51,14 @@ tableView.addEventListener('click', function(e) {
 		title: lists[e.index].name
 	});
 	Titanium.UI.currentTab.open(checklistWindow);
+});
+
+tableView.addEventListener('delete', function(e){
+	Ti.API.info('---------- delete -------------');
+	Ti.API.info(e.rowData);
+	Ti.API.info(e.rowData.destination_id);
+	db.deleteDestination(e.row.destination_id);
+	refresh(tableView);
 });
 
 win.add(tableView);
