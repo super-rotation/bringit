@@ -3,12 +3,13 @@ var win = Titanium.UI.currentWindow;
 var tableView = Titanium.UI.createTableView();
 
 Titanium.include('database.js');
-
 var db = new bringitDB();
 
+var lists = [];
 var refresh = function(tableView){
 	tableView.data = null;
 	var destLists = db.selectAllDestination();
+	lists = destLists;
 	for (var i=0; i<destLists.length; i++) {
 		var destList = destLists[i];
 		var row = Titanium.UI.createTableViewRow({hasChild: true});
@@ -43,8 +44,8 @@ win.rightNavButton = addButton;
 tableView.addEventListener('click', function(e) {
 	var checklistWindow = Titanium.UI.createWindow({
 		url: 'checklist.js',
-		checklist_id: e.index,
-		title: destLists[e.index].name
+		destination_id: lists[e.index].id,
+		title: lists[e.index].name
 	});
 	Titanium.UI.currentTab.open(checklistWindow);
 });
