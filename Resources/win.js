@@ -38,11 +38,13 @@ addButton.addEventListener('click', function () {
 		title: '行き先を追加',
 		backgroundColor: '#fff'
 	});
-	addWindow.refresh = refresh;
-	addWindow.tableView = tableView;
 	Titanium.UI.currentTab.open(addWindow);
 });
 win.rightNavButton = addButton;
+
+win.addEventListener('onload', function(){
+	Ti.API.debug('------------- onload ----------------');
+});
 
 tableView.addEventListener('click', function(e) {
 	var checklistWindow = Titanium.UI.createWindow({
@@ -51,6 +53,11 @@ tableView.addEventListener('click', function(e) {
 		title: lists[e.index].name
 	});
 	Titanium.UI.currentTab.open(checklistWindow);
+});
+
+Titanium.App.addEventListener('updateDestination', function(data){
+	Ti.API.debug('------------ update destination ------------');
+	refresh(tableView);
 });
 
 tableView.addEventListener('delete', function(e){
