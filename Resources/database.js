@@ -16,7 +16,7 @@ var bringitDB = function(){
 	this.insertInitialData = function(){
 		this.open();
 		var rows = this.db.execute('SELECT COUNT(*) FROM destination');
-		Ti.API.info('row: ' + rows.field(0));
+		Ti.API.debug('row: ' + rows.field(0));
 		if(!rows.field(0)){
 			var now = this.getUnixtime();
 			var res = this.db.execute(
@@ -47,8 +47,8 @@ var bringitDB = function(){
 			rows.next();
 		}
 		Ti.API.debug('Found: ' + rows.getRowCount());
-		Ti.API.info('--------------- destObj ------------------------');
-		Ti.API.info(res);
+		Ti.API.debug('--------------- destObj ------------------------');
+		Ti.API.debug(res);
 		rows.close();
 		this.close();
 		return res;

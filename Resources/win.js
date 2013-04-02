@@ -20,8 +20,8 @@ var refresh = function(tableView){
 			width: 300,
 			height: 'auto'
 		}));
-		Ti.API.info('-------------destlist----------------');
-		Ti.API.info(destList);
+		Ti.API.debug('-------------destlist----------------');
+		Ti.API.debug(destList);
 		row.destination_id = destList.destination_id;
 		tableView.appendRow(row);
 	}
@@ -54,9 +54,9 @@ tableView.addEventListener('click', function(e) {
 });
 
 tableView.addEventListener('delete', function(e){
-	Ti.API.info('---------- delete -------------');
-	Ti.API.info(e.rowData);
-	Ti.API.info(e.rowData.destination_id);
+	Ti.API.debug('---------- delete -------------');
+	Ti.API.debug(e.rowData);
+	Ti.API.debug(e.rowData.destination_id);
 	db.deleteDestination(e.row.destination_id);
 	refresh(tableView);
 });
