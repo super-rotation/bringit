@@ -1,5 +1,7 @@
 var bringitDB = function(){
 	this.dbName = 'bringitdb';
+	this.initialDestinationId = 10000;
+	this.initialItemId = 10000;
 
 	this.open = function(){
 		this.db = Titanium.Database.open(this.dbName);
@@ -13,20 +15,45 @@ var bringitDB = function(){
 		return parseInt((new Date) /1000);
 	};
 
-	this.insertInitialData = function(){
+	this.insertInitialDestination = function(){
 		this.open();
 		var rows = this.db.execute('SELECT COUNT(*) FROM destination');
 		Ti.API.debug('row: ' + rows.field(0));
-		if(!rows.field(0)){
-			var now = this.getUnixtime();
-			var res = this.db.execute(
-				'INSERT INTO destination (destination_id, name, created_at, updated_at) VALUES(?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)',
-				10000, '実家', now, now,
-				10001, 'スノーボード', now, now,
-				10002, '聖地巡礼', now, now
-			);
-			Ti.API.debug('Add to DB');
+		if(rows.field(0)){
+			Ti.API.debug('destination table already has records');
+			return true;
 		}
+		var now = this.getUnixtime();
+		var res = this.db.execute(
+			'INSERT INTO destination (destination_id, name, created_at, updated_at)'
+			+ ' VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)',
+			this.initialDestinationId, '実家', now, now,
+			this.initialDestinationId + 1, 'スノーボード', now, now,
+			this.initialDestinationId + 2, '聖地巡礼', now, now
+		);
+		Ti.API.debug('Add to destination');
+		this.close();
+		return true;
+	};
+
+	this.insertInitialDestinationItem = function(){
+		this.open();
+		var rows = this.db.execute('SELECT COUNT(*) FROM destination_item');
+		Ti.API.debug('row: ' + rows.field(0));
+		if(rows.field(0)){
+			Ti.API.debug('destination_item table already has records');
+			return true;
+		}
+		var now = this.getUnixtime();
+		var res = this.db.execute(
+			'INSERT INTO destination_item (destination_id, item_id, checked, created_at, updated_at)'
+			+ ' VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)',
+			this.initialDestinationId    , this.initialItemId    , 0, now, now,
+			this.initialDestinationId + 1, this.initialItemId + 1, 0, now, now,
+			this.initialDestinationId + 2, this.initialItemId + 2, 0, now, now,
+			this.initialDestinationId + 3, this.initialItemId + 3, 0, now, now
+		);
+		Ti.API.debug('Add to destination_item');
 		this.close();
 		return true;
 	};
@@ -81,7 +108,19 @@ var bringitDB = function(){
 
 	this.open();
 //	this.db.execute('DROP TABLE destination');
-	this.db.execute('CREATE TABLE IF NOT EXISTS destination (destination_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL)');
-	this.insertInitialData();
+	this.db.execute('CREATE TABLE IF NOT EXISTS destination ('
+		+ 'destination_id INTEGER PRIMARY KEY AUTOINCREMENT,'
+		+ 'name TEXT, created_at INTEGER NOT NULL,'
+		+ 'updated_at INTEGER NOT NULL)'
+	);
+	this.db.execute('CREATE TABLE IF NOT EXISTS destination_item ('
+		+ 'destination_id INTEGER,'
+		+ 'item_id INTEGER, checked INTEGER NOT NULL,'
+		+ 'created_at INTEGER NOT NULL,'
+		+ 'updated_at INTEGER NOT NULL,'
+		+ 'PRIMARY KEY (destination_id, item_id))'
+	);
+	this.insertInitialDestination();
+	this.insertInitialDestinationItem();
 	this.close();
 };
