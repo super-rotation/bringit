@@ -49,7 +49,7 @@ win.addEventListener('onload', function(){
 tableView.addEventListener('click', function(e) {
 	var checklistWindow = Titanium.UI.createWindow({
 		url: 'checklist.js',
-		destination_id: lists[e.index].id,
+		destination_id: lists[e.index].destination_id,
 		title: lists[e.index].name
 	});
 	Titanium.UI.currentTab.open(checklistWindow);

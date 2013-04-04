@@ -21,6 +21,7 @@ var bringitDB = function(){
 		Ti.API.debug('row: ' + rows.field(0));
 		if(rows.field(0)){
 			Ti.API.debug('destination table already has records');
+			this.close();
 			return true;
 		}
 		var now = this.getUnixtime();
@@ -42,6 +43,7 @@ var bringitDB = function(){
 		Ti.API.debug('row: ' + rows.field(0));
 		if(rows.field(0)){
 			Ti.API.debug('destination_item table already has records');
+			this.close();
 			return true;
 		}
 		var now = this.getUnixtime();
@@ -49,9 +51,9 @@ var bringitDB = function(){
 			'INSERT INTO destination_item (destination_id, item_id, checked, created_at, updated_at)'
 			+ ' VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)',
 			this.initialDestinationId    , this.initialItemId    , 0, now, now,
-			this.initialDestinationId + 1, this.initialItemId + 1, 0, now, now,
-			this.initialDestinationId + 2, this.initialItemId + 2, 0, now, now,
-			this.initialDestinationId + 3, this.initialItemId + 3, 0, now, now
+			this.initialDestinationId    , this.initialItemId + 1, 0, now, now,
+			this.initialDestinationId    , this.initialItemId + 2, 0, now, now,
+			this.initialDestinationId + 1, this.initialItemId + 3, 0, now, now
 		);
 		Ti.API.debug('Add to destination_item');
 		this.close();
@@ -62,7 +64,7 @@ var bringitDB = function(){
 		this.open();
 		var rows = this.db.execute('SELECT * FROM destination ORDER BY created_at');
 		var res = [];
-		while(rows.isValidRow()){
+		while (rows.isValidRow()) {
 			var destObj = {};
 			destObj.destination_id = rows.fieldByName('destination_id');
 			destObj.name = rows.fieldByName('name');
@@ -73,8 +75,49 @@ var bringitDB = function(){
 			res.push(destObj);
 			rows.next();
 		}
-		Ti.API.debug('Found: ' + rows.getRowCount());
 		Ti.API.debug('--------------- destObj ------------------------');
+		Ti.API.debug('Found: ' + rows.getRowCount());
+		Ti.API.debug(res);
+		rows.close();
+		this.close();
+		return res;
+	};
+
+	this.setDestItemObj = function(rows){
+		var res = [];
+		while (rows.isValidRow()) {
+			var destItemObj = {};
+			destItemObj.destination_id = rows.fieldByName('destination_id');
+			destItemObj.item_id = rows.fieldByName('item_id');
+			destItemObj.checked = rows.fieldByName('checked');
+			var creationDate = new Date(rows.fieldByName('created_at'));
+			destItemObj.created_at = creationDate.toLocaleString();
+			var updateDate = new Date(rows.fieldByName('updated_at'));
+			destItemObj.updated_at = updateDate.toLocaleString();
+			res.push(destItemObj);
+			rows.next();
+		}
+		return res;
+	};
+
+	this.selectAllDestinationItem = function(){
+		this.open();
+		var rows = this.db.execute('SELECT * FROM destination_item ORDER BY created_at');
+		var res = this.setDestItemObj(rows);
+		Ti.API.debug('--------------- destItemObj ------------------------');
+		Ti.API.debug('Found: ' + rows.getRowCount());
+		Ti.API.debug(res);
+		rows.close();
+		this.close();
+		return res;
+	};
+
+	this.selectDestinationItemById = function(destination_id){
+		this.open();
+		var rows = this.db.execute('SELECT * FROM destination_item WHERE destination_id = ? ORDER BY created_at', destination_id);
+		var res = this.setDestItemObj(rows);
+		Ti.API.debug('--------------- destItemObj ------------------------');
+		Ti.API.debug('Found: ' + rows.getRowCount());
 		Ti.API.debug(res);
 		rows.close();
 		this.close();
@@ -113,9 +156,11 @@ var bringitDB = function(){
 		+ 'name TEXT, created_at INTEGER NOT NULL,'
 		+ 'updated_at INTEGER NOT NULL)'
 	);
+//	this.db.execute('DROP TABLE destination_item');
 	this.db.execute('CREATE TABLE IF NOT EXISTS destination_item ('
 		+ 'destination_id INTEGER,'
-		+ 'item_id INTEGER, checked INTEGER NOT NULL,'
+		+ 'item_id INTEGER,'
+		+ 'checked INTEGER NOT NULL,'
 		+ 'created_at INTEGER NOT NULL,'
 		+ 'updated_at INTEGER NOT NULL,'
 		+ 'PRIMARY KEY (destination_id, item_id))'

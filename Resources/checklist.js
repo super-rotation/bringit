@@ -2,12 +2,18 @@ var win = Titanium.UI.currentWindow;
 
 var tableView = Titanium.UI.createTableView();
 
-var checklists = [{name: 'パンツ'}, {name:'はぶらし'}, {name: 'コンタクトレンズ'}, {name: '充電器'}];
+Titanium.include('database.js');
+var db = new bringitDB();
+
+var checklists = db.selectDestinationItemById(win.destination_id);
+
 for (var i=0; i<checklists.length; i++) {
 	var checklist = checklists[i];
 	var row = Titanium.UI.createTableViewRow();
 	row.add(Titanium.UI.createLabel({
-		text: checklist.name,
+		//TODO: change item_id into name after making item table
+		text: checklist.item_id,
+//		text: checklist.name,
 		top: 10,
 		left: 50,
 		width: 300,
