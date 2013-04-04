@@ -52,6 +52,7 @@ tableView.addEventListener('click', function(e) {
 		destination_id: lists[e.index].destination_id,
 		title: lists[e.index].name
 	});
+	Titanium.App.fireEvent('openChecklist');
 	Titanium.UI.currentTab.open(checklistWindow);
 });
 

@@ -124,6 +124,25 @@ var bringitDB = function(){
 		return res;
 	};
 
+	this.getCheckedStatus = function(destination_id, item_id){
+		this.open();
+		var rows = this.db.execute('SELECT * FROM destination_item WHERE destination_id = ? and item_id = ?', destination_id, item_id);
+		var isChecked = rows.fieldByName('checked');
+		this.close();
+		return isChecked;
+	};
+
+	this.updateCheckedStatus = function(destination_id, item_id){
+		var isChecked = this.getCheckedStatus(destination_id, item_id);
+		this.open();
+		var res = this.db.execute('UPDATE destination_item set checked = ?, updated_at = ? WHERE destination_id = ? and item_id = ?',
+		isChecked ? 0 : 1, this.getUnixtime(), destination_id, item_id
+		);
+		if (res) Ti.API.info('sucess to update checked status');
+		this.close();
+		return true;
+	};
+
 	this.addDestination = function(destinationName){
 		this.open();
 		var now = this.getUnixtime();
