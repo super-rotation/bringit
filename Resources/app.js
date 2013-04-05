@@ -15,7 +15,7 @@ if (Ti.version < 1.8 ) {
 }
 
 // This is a single context application with multiple windows in a stack
-/*
+
 (function() {
 	//render appropriate components based on the platform and form factor
 	var osname = Ti.Platform.osname,
@@ -41,23 +41,13 @@ if (Ti.version < 1.8 ) {
 			Window = require('ui/handheld/ApplicationWindow');
 		}
 	}
-	new Window().open();
+
+	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
+	var tabGroup = new ApplicationTabGroup(Window);
+	if (osname === 'iphone' || osname === 'ipad') {
+		tabGroup.open({transition: Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
+	}
+	else {
+		tabGroup.open();
+	}
 })();
-*/
-
-var tabGroup = Titanium.UI.createTabGroup();
-var win = Titanium.UI.createWindow({
-	title: '用途',
-	backgroundColor: '#fff',
-	url: 'win.js'
-});
-var tab = Titanium.UI.createTab({
-	window: win,
-	title: 'check list'
-});
-
-tabGroup.addTab(tab);
-
-win.tabBarHidden = true;
-
-tabGroup.open();
