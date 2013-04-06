@@ -6,8 +6,7 @@ function AddingWindow(title) {
 
     var view = Titanium.UI.createView();
 
-    Titanium.include('database.js');
-    var db = new bringitDB();
+    var db = require('database');
 
     var textArea = Titanium.UI.createTextArea({
         height: 150,

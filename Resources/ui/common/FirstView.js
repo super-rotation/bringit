@@ -2,8 +2,8 @@
 function FirstView() {
 	var self = Titanium.UI.createTableView({editable: true});
 
-	Titanium.include('database.js');
-	var db = new bringitDB();
+	var db = require('database');
+	db.setTable();
 
 	var refresh = function() {
 		self.data = null;

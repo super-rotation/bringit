@@ -6,8 +6,7 @@ function ChecklistWindow(destination_id, name) {
 
 	var tableView = Titanium.UI.createTableView();
 
-	Titanium.include('database.js');
-	var db = new bringitDB();
+	var db = require('database');
 
 	var refresh = function() {
 		tableView.data = null;
