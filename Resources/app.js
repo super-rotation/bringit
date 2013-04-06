@@ -42,12 +42,5 @@ if (Ti.version < 1.8 ) {
 		}
 	}
 
-	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
-	var tabGroup = new ApplicationTabGroup(Window);
-	if (osname === 'iphone' || osname === 'ipad') {
-		tabGroup.open({transition: Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
-	}
-	else {
-		tabGroup.open();
-	}
+	new Window().open({transition: Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
 })();
