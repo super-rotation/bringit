@@ -11,13 +11,19 @@ function ChecklistWindow(destination_id, name) {
 	var refresh = function() {
 		tableView.data = null;
 		var checklists = db.selectDestinationItemById(destination_id);
+		var items = db.selectAllItem();
+		var item_map = {};
+		for (var i=0; i<items.length; i++) {
+			item_map[items[i].item_id] = items[i];
+		}
+
 		for (var i=0; i<checklists.length; i++) {
 			var checklist = checklists[i];
 			var row = Titanium.UI.createTableViewRow();
 			row.add(Titanium.UI.createLabel({
 				//TODO: change item_id into name after making item table
-				text: checklist.item_id,
-		//		text: checklist.name,
+//				text: checklist.item_id,
+				text: item_map[checklist.item_id].name,
 				top: 10,
 				left: 50,
 				width: 300,

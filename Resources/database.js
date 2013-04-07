@@ -16,15 +16,20 @@ exports.getUnixtime = function(){
 
 exports.setTable = function() {
 	this.open();
-	//	this.db.execute('DROP TABLE destination');
-	this.db.execute('CREATE TABLE IF NOT EXISTS destination ('
+//	this.db.execute('DROP TABLE destination');
+	this.db.execute(
+		'CREATE TABLE IF NOT EXISTS destination ('
 		+ 'destination_id INTEGER PRIMARY KEY AUTOINCREMENT,'
 		+ 'name TEXT, created_at INTEGER NOT NULL,'
 		+ 'updated_at INTEGER NOT NULL)'
 	);
+	this.close();
 	this.insertInitialDestination();
+
+	this.open();
 	//	this.db.execute('DROP TABLE destination_item');
-	this.db.execute('CREATE TABLE IF NOT EXISTS destination_item ('
+	this.db.execute(
+		'CREATE TABLE IF NOT EXISTS destination_item ('
 		+ 'destination_id INTEGER,'
 		+ 'item_id INTEGER,'
 		+ 'checked INTEGER NOT NULL,'
@@ -32,15 +37,26 @@ exports.setTable = function() {
 		+ 'updated_at INTEGER NOT NULL,'
 		+ 'PRIMARY KEY (destination_id, item_id))'
 	);
-	this.insertInitialDestinationItem();
 	this.close();
+	this.insertInitialDestinationItem();
+
+	this.open();
+	//this.db.execute('DROP TABLE item');
+	this.db.execute(
+		'CREATE TABLE IF NOT EXISTS item ('
+		+ 'item_id INTEGER PRIMARY KEY AUTOINCREMENT,'
+		+ 'name TEXT,'
+		+ 'memo TEXT)'
+	);
+	this.close();
+	this.insertInitialItem();
 };
 
 exports.insertInitialDestination = function(){
 	this.open();
 	var rows = this.db.execute('SELECT COUNT(*) FROM destination');
 	Ti.API.debug('row: ' + rows.field(0));
-	if(rows.field(0)){
+	if (rows.field(0)) {
 		Ti.API.debug('destination table already has records');
 		this.close();
 		return true;
@@ -58,11 +74,11 @@ exports.insertInitialDestination = function(){
 	return true;
 };
 
-exports.insertInitialDestinationItem = function(){
+exports.insertInitialDestinationItem = function() {
 	this.open();
 	var rows = this.db.execute('SELECT COUNT(*) FROM destination_item');
 	Ti.API.debug('row: ' + rows.field(0));
-	if(rows.field(0)){
+	if (rows.field(0)) {
 		Ti.API.debug('destination_item table already has records');
 		this.close();
 		return true;
@@ -71,17 +87,40 @@ exports.insertInitialDestinationItem = function(){
 	var res = this.db.execute(
 		'INSERT INTO destination_item (destination_id, item_id, checked, created_at, updated_at)'
 		+ ' VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)',
-		this.initialDestinationId    , _initialItemId    , 0, now, now,
-		this.initialDestinationId    , _initialItemId + 1, 0, now, now,
-		this.initialDestinationId    , _initialItemId + 2, 0, now, now,
-		this.initialDestinationId + 1, _initialItemId + 3, 0, now, now
+		_initialDestinationId    , _initialItemId    , 0, now, now,
+		_initialDestinationId    , _initialItemId + 1, 0, now, now,
+		_initialDestinationId    , _initialItemId + 2, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 3, 0, now, now
 	);
 	Ti.API.debug('Add to destination_item');
 	this.close();
 	return true;
 };
 
-exports.selectAllDestination = function(){
+exports.insertInitialItem = function() {
+	this.open();
+	var rows = this.db.execute('SELECT COUNT(*) FROM item');
+	Ti.API.debug('row ' + rows.field(0));
+	if (rows.field(0)) {
+		Ti.API.debug('item table already has records');
+		this.close();
+		return true;
+	}
+	var now = this.getUnixtime();
+	var res = this.db.execute(
+		'INSERT INTO item (item_id, name, memo)'
+		+ ' VALUES (?, ?, ?), (?, ?, ?), (?, ?, ?), (?, ?, ?)',
+		_initialItemId    , '歯ブラシ', 'MEMO',
+		_initialItemId + 1, 'タオル', 'MEMO',
+		_initialItemId + 2, '洗顔フォーム', 'MEMO',
+		_initialItemId + 3, 'コンタクトレンズ', 'MEMO'
+	);
+	Ti.API.debug('Add to item');
+	this.close();
+	return true;
+};
+
+exports.selectAllDestination = function() {
 	this.open();
 	var rows = this.db.execute('SELECT * FROM destination ORDER BY created_at');
 	var res = [];
@@ -144,6 +183,24 @@ exports.selectDestinationItemById = function(destination_id){
 	this.close();
 	return res;
 };
+
+exports.selectAllItem = function () {
+	this.open();
+	var rows = this.db.execute('SELECT * FROM item');
+	var res = [];
+	while (rows.isValidRow()) {
+		var itemObj = {};
+		itemObj.item_id = rows.fieldByName('item_id');
+		itemObj.name = rows.fieldByName('name');
+		itemObj.memo = rows.fieldByName('memo');
+		res.push(itemObj);
+		rows.next();
+	}
+	rows.close();
+	this.close();
+	return res;
+};
+
 
 exports.getCheckedStatus = function(destination_id, item_id){
 	this.open();
