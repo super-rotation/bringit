@@ -399,3 +399,16 @@ exports.deleteDestination = function(destination_id) {
 	this.close();
 	return true;
 };
+
+exports.deleteDestinationItem = function(destination_id, item_id) {
+	this.open();
+	this.db.execute('begin transaction');
+	this.db.execute(
+		'DELETE FROM destination_item WHERE destination_id = ? and item_id = ?',
+		destination_id, item_id
+	);
+	this.db.execute('commit');
+	Ti.API.debug('delete from destination_item');
+	this.close();
+	return true;
+};

@@ -4,7 +4,7 @@ function ChecklistWindow(destination_id, name) {
 		title: name
 	});
 
-	var tableView = Titanium.UI.createTableView();
+	var tableView = Titanium.UI.createTableView({editable: true});
 
 	var db = require('database');
 
@@ -27,6 +27,8 @@ function ChecklistWindow(destination_id, name) {
 				width: 300,
 				height: 'auto'
 			}));
+			row.destination_id = checklist.destination_id;
+			row.item_id = checklist.item_id;
 			var checkbox = Titanium.UI.createButton({
 				title: '',
 				top: 5,
@@ -75,6 +77,12 @@ function ChecklistWindow(destination_id, name) {
 		}
 	};
 	self.add(tableView);
+
+	tableView.addEventListener('delete', function(e) {
+		db.deleteDestinationItem(e.row.destination_id, e.row.item_id);
+		refresh();
+	});
+
 
 	Titanium.App.addEventListener('openChecklist', function(data) {
 		Ti.API.debug('------------ open checklist ------------');
