@@ -11,8 +11,8 @@ exports.close = function(){
 	this.db.close();
 };
 
-exports.getUnixtime = function(){
-	return parseInt((new Date) /1000);
+exports.getUnixtime = function() {
+	return parseInt((new Date()) /1000);
 };
 
 exports.setTable = function() {
@@ -53,7 +53,7 @@ exports.setTable = function() {
 	this.insertInitialItem();
 
 	this.open();
-	//this.db.execute('DROP TABLE category');
+//	this.db.execute('DROP TABLE category');
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS category ('
 		+ 'category_id INTEGER PRIMARY KEY AUTOINCREMENT,'
@@ -199,10 +199,8 @@ exports.selectAllDestination = function() {
 		var destObj = {};
 		destObj.destination_id = rows.fieldByName('destination_id');
 		destObj.name = rows.fieldByName('name');
-		var creationDate = new Date(rows.fieldByName('created_at'));
-		destObj.created_at = creationDate.toLocaleString();
-		var updateDate = new Date(rows.fieldByName('updated_at'));
-		destObj.updated_at = updateDate.toLocaleString();
+		destObj.created_at = rows.fieldByName('created_at');
+		destObj.updated_at = rows.fieldByName('updated_at');
 		res.push(destObj);
 		rows.next();
 	}
@@ -221,10 +219,8 @@ exports.setDestItemObj = function(rows){
 		destItemObj.destination_id = rows.fieldByName('destination_id');
 		destItemObj.item_id = rows.fieldByName('item_id');
 		destItemObj.checked = rows.fieldByName('checked');
-		var creationDate = new Date(rows.fieldByName('created_at'));
-		destItemObj.created_at = creationDate.toLocaleString();
-		var updateDate = new Date(rows.fieldByName('updated_at'));
-		destItemObj.updated_at = updateDate.toLocaleString();
+		destItemObj.created_at = rows.fieldByName('created_at');
+		destItemObj.updated_at = rows.fieldByName('updated_at');
 		res.push(destItemObj);
 		rows.next();
 	}
@@ -280,10 +276,8 @@ exports.selectAllCategory = function() {
 		var categoryObj = {};
 		categoryObj.category_id = rows.fieldByName('category_id');
 		categoryObj.name = rows.fieldByName('name');
-		var creationDate = new Date(rows.fieldByName('created_at'));
-		categoryObj.created_at = creationDate.toLocaleString();
-		var updateDate = new Date(rows.fieldByName('updated_at'));
-		categoryObj.updated_at = updateDate.toLocaleString();
+		categoryObj.created_at = rows.fieldByName('created_at');
+		categoryObj.updated_at = rows.fieldByName('updated_at');
 		res.push(categoryObj);
 		rows.next();
 	}
@@ -300,10 +294,8 @@ exports.selectCategoryItemById = function(category_id) {
 		var categoryItemObj = {};
 		categoryItemObj.category_id = rows.fieldByName('category_id');
 		categoryItemObj.item_id = rows.fieldByName('item_id');
-		var creationDate = new Date(rows.fieldByName('created_at'));
-		categoryItemObj.created_at = creationDate.toLocaleString();
-		var updateDate = new Date(rows.fieldByName('updated_at'));
-		categoryItemObj.updated_at = updateDate.toLocaleString();
+		categoryItemObj.created_at = rows.fieldByName('created_at');
+		categoryItemObj.updated_at = rows.fieldByName('updated_at');
 		res.push(categoryItemObj);
 		rows.next();
 	}
@@ -324,8 +316,9 @@ exports.getCheckedStatus = function(destination_id, item_id) {
 exports.updateCheckedStatus = function(destination_id, item_id) {
 	var isChecked = this.getCheckedStatus(destination_id, item_id);
 	this.open();
-	var res = this.db.execute('UPDATE destination_item set checked = ?, updated_at = ? WHERE destination_id = ? and item_id = ?',
-	isChecked ? 0 : 1, this.getUnixtime(), destination_id, item_id
+	var res = this.db.execute(
+		'UPDATE destination_item set checked = ?, updated_at = ? WHERE destination_id = ? and item_id = ?',
+		isChecked ? 0 : 1, this.getUnixtime(), destination_id, item_id
 	);
 	if (res) Ti.API.info('sucess to update checked status');
 	this.close();
