@@ -38,6 +38,10 @@ function AddingWindow(title, tableType, id) {
                 db.addItem(textArea.value, id);
                 Titanium.App.fireEvent('addItem');
             }
+            else if (tableType === 'category') {
+                db.addCategory(textArea.value);
+                Titanium.App.fireEvent('addCategory');
+            }
         }
     });
 

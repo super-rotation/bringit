@@ -38,6 +38,18 @@ function ApplicationWindow() {
 				itemListWindow.rightNavButton = addingButton;
 				navGroup.open(itemListWindow);
 			});
+			var addingButton = Ti.UI.createButton({
+				systemButton: Titanium.UI.iPhone.SystemButton.ADD
+			});
+			addingButton.addEventListener('click', function () {
+				var AddingWindow = require('ui/common/AddingWindow');
+				var addingWindow = new AddingWindow('カテゴリーを追加', 'category');
+					navGroup.open(addingWindow, {animated: true});
+					Titanium.App.addEventListener('addCategory', function() {
+						navGroup.close(addingWindow, {animated: true});
+					});
+			});
+			categoryWindow.rightNavButton = addingButton;
 			navGroup.open(categoryWindow);
 		});
 

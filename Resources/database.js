@@ -344,6 +344,18 @@ exports.addDestination = function(destinationName) {
 	return true;
 };
 
+exports.addCategory = function(name) {
+	this.open();
+	var now = this.getUnixtime();
+	var res = this.db.execute(
+		'INSERT INTO category (name, created_at, updated_at) VALUES (?, ?, ?)',
+		name, now, now
+	);
+	Ti.API.debug('Add to category');
+	this.close();
+	return true;
+};
+
 exports.addItem = function(item_name, category_id) {
 	//add item into item table
 	this.open();
