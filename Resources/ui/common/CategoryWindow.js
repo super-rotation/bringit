@@ -5,7 +5,8 @@ function CategoryWindow() {
 	});
 	var tableView = Titanium.UI.createTableView();
 
-	var categories = [{name: '洗面用具'}, {name:'衣類'}, {name: '電化製品'}, {name: 'マイアイテム'}];
+	var db = require('database');
+	var categories = db.selectAllCategory();
 	for (var i=0; i<categories.length; i++) {
 		var category = categories[i];
 		var row = Titanium.UI.createTableViewRow({hasChild: true});
@@ -34,7 +35,7 @@ function CategoryWindow() {
 
 	tableView.addEventListener('click', function(e) {
 		Titanium.App.fireEvent("openItemList", {
-			item_list_id: e.index,
+			category_id: categories[e.index].category_id,
 			name: categories[e.index].name
 		});
 	});

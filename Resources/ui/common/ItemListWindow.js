@@ -1,16 +1,27 @@
-function ItemListWindow(item_list_id, name) {
+function ItemListWindow(category_id, name) {
 	var self = Titanium.UI.createWindow({
-			itemListId: item_list_id,
+			category_id: category_id,
 			title: name
 	});
 	var tableView = Titanium.UI.createTableView();
 
-	var items = [{name: '歯ブラシ'}, {name:'タオル'}, {name: '洗顔フォーム'}, {name: 'コンタクトレンズ'}];
+	Ti.API.debug('------------ ItemListWindow ------------');
+	var db = require('database');
+	var items = db.selectAllItem();
+	var itemMap = {};
 	for (var i=0; i<items.length; i++) {
-		var item = items[i];
+		itemMap[items[i].item_id] = items[i];
+	}
+	Ti.API.debug('itemMap: ' + itemMap);
+	var categoryItems = db.selectCategoryItemById(category_id);
+	Ti.API.debug('category_id: ' + category_id);
+	Ti.API.debug('categoryItems: ' + categoryItems);
+
+	for (var i=0; i<categoryItems.length; i++) {
+		var categoryItem = categoryItems[i];
 		var row = Titanium.UI.createTableViewRow();
 		row.add(Titanium.UI.createLabel({
-			text: item.name,
+			text: itemMap[categoryItem.item_id].name,
 			top: 10,
 			left: 10,
 			width: 300,

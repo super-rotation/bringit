@@ -23,13 +23,13 @@ function ApplicationWindow() {
 			var categoryWindow = new CategoryWindow();
 			Titanium.App.addEventListener('openItemList', function(params) {
 				var ItemListWindow = require ('ui/common/ItemListWindow');
-				var itemListWindow = new ItemListWindow(params.item_list_id, params.name);
+				var itemListWindow = new ItemListWindow(params.category_id, params.name);
 				var addingButton = Ti.UI.createButton({
 					systemButton: Titanium.UI.iPhone.SystemButton.ADD
 				});
 				addingButton.addEventListener('click', function () {
 					var AddingWindow = require('ui/common/AddingWindow');
-					var addingWindow = new AddingWindow('アイテムを追加');
+					var addingWindow = new AddingWindow('アイテムを追加', 'item', params.category_id);
 					navGroup.open(addingWindow, {animated: true});
 					Titanium.App.addEventListener('addItem', function() {
 						navGroup.close(addingWindow, {animated: true});
@@ -52,7 +52,7 @@ function ApplicationWindow() {
 	});
 	addingButton.addEventListener('click', function () {
 		var AddingWindow = require('ui/common/AddingWindow');
-		var addingWindow = new AddingWindow('行き先を追加');
+		var addingWindow = new AddingWindow('行き先を追加', 'destination');
 		navGroup.open(addingWindow, {animated: true});
 		Titanium.App.addEventListener('addDestination', function() {
 			navGroup.close(addingWindow, {animated: true});

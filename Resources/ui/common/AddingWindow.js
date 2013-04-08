@@ -1,4 +1,4 @@
-function AddingWindow(title) {
+function AddingWindow(title, tableType, id) {
     var self = Titanium.UI.createWindow({
         title: title,
         backgroundColor: '#fff'
@@ -30,8 +30,14 @@ function AddingWindow(title) {
 
     addingButton.addEventListener('click', function() {
         if (textArea.value) {
-            db.addDestination(textArea.value);
-            Titanium.App.fireEvent('addDestination');
+            if (tableType === 'destination') {
+                db.addDestination(textArea.value);
+                Titanium.App.fireEvent('addDestination');
+            }
+            else if (tableType === 'item') {
+                db.addItem(textArea.value, id);
+                Titanium.App.fireEvent('addItem');
+            }
         }
     });
 

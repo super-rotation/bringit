@@ -1,6 +1,7 @@
 var _dbName = 'bringitdb';
 var _initialDestinationId = 10000;
 var _initialItemId = 10000;
+var _initialCategoryId = 10000;
 
 exports.open = function(){
 	this.db = Titanium.Database.open(_dbName);
@@ -50,6 +51,30 @@ exports.setTable = function() {
 	);
 	this.close();
 	this.insertInitialItem();
+
+	this.open();
+	//this.db.execute('DROP TABLE category');
+	this.db.execute(
+		'CREATE TABLE IF NOT EXISTS category ('
+		+ 'category_id INTEGER PRIMARY KEY AUTOINCREMENT,'
+		+ 'name TEXT,'
+		+ 'created_at INTEGER NOT NULL,'
+		+ 'updated_at INTEGER NOT NULL)'
+	);
+	this.close();
+	this.insertInitialCategory();
+
+	this.open();
+	//this.db.execute('DROP TABLE category_item');
+	this.db.execute(
+		'CREATE TABLE IF NOT EXISTS category_item ('
+		+ 'category_id INTEGER,'
+		+ 'item_id INTEGER,'
+		+ 'created_at INTEGER NOT NULL,'
+		+ 'updated_at INTEGER NOT NULL)'
+	);
+	this.close();
+	this.insertInitialCategoryItem();
 };
 
 exports.insertInitialDestination = function(){
@@ -120,6 +145,52 @@ exports.insertInitialItem = function() {
 	return true;
 };
 
+exports.insertInitialCategory = function() {
+	this.open();
+	var rows = this.db.execute('SELECT COUNT(*) FROM category');
+	Ti.API.debug('row ' + rows.field(0));
+	if (rows.field(0)) {
+		Ti.API.debug('category table already has records');
+		this.close();
+		return true;
+	}
+	var now = this.getUnixtime();
+	var res = this.db.execute(
+		'INSERT INTO category (category_id, name, created_at, updated_at)'
+		+ ' VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)',
+		_initialCategoryId    , '洗面用具', now, now,
+		_initialCategoryId + 1, '衣類', now, now,
+		_initialCategoryId + 2, '電化製品', now, now,
+		_initialCategoryId + 3, 'マイアイテム', now, now
+	);
+	Ti.API.debug('Add to category');
+	this.close();
+	return true;
+};
+
+exports.insertInitialCategoryItem = function() {
+	this.open();
+	var rows = this.db.execute('SELECT COUNT(*) FROM category_item');
+	Ti.API.debug('row: ' + rows.field(0));
+	if (rows.field(0)) {
+		Ti.API.debug('category_item table already has records');
+		this.close();
+		return true;
+	}
+	var now = this.getUnixtime();
+	this.db.execute(
+		'INSERT INTO category_item (category_id, item_id, created_at, updated_at)'
+		+ ' VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)',
+		_initialCategoryId    , _initialItemId    , now, now,
+		_initialCategoryId    , _initialItemId + 1, now, now,
+		_initialCategoryId    , _initialItemId + 2, now, now,
+		_initialCategoryId + 1, _initialItemId + 3, now, now
+	);
+	Ti.API.debug('Add to category_item');
+	this.close();
+	return true;
+};
+
 exports.selectAllDestination = function() {
 	this.open();
 	var rows = this.db.execute('SELECT * FROM destination ORDER BY created_at');
@@ -172,7 +243,7 @@ exports.selectAllDestinationItem = function(){
 	return res;
 };
 
-exports.selectDestinationItemById = function(destination_id){
+exports.selectDestinationItemById = function(destination_id) {
 	this.open();
 	var rows = this.db.execute('SELECT * FROM destination_item WHERE destination_id = ? ORDER BY created_at', destination_id);
 	var res = this.setDestItemObj(rows);
@@ -201,8 +272,48 @@ exports.selectAllItem = function () {
 	return res;
 };
 
+exports.selectAllCategory = function() {
+	this.open();
+	var rows = this.db.execute('SELECT * FROM category');
+	var res = [];
+	while (rows.isValidRow()) {
+		var categoryObj = {};
+		categoryObj.category_id = rows.fieldByName('category_id');
+		categoryObj.name = rows.fieldByName('name');
+		var creationDate = new Date(rows.fieldByName('created_at'));
+		categoryObj.created_at = creationDate.toLocaleString();
+		var updateDate = new Date(rows.fieldByName('updated_at'));
+		categoryObj.updated_at = updateDate.toLocaleString();
+		res.push(categoryObj);
+		rows.next();
+	}
+	rows.close();
+	this.close();
+	return res;
+};
 
-exports.getCheckedStatus = function(destination_id, item_id){
+exports.selectCategoryItemById = function(category_id) {
+	this.open();
+	var rows = this.db.execute('SELECT * FROM category_item WHERE category_id = ? ORDER BY created_at', category_id);
+	var res = [];
+	while (rows.isValidRow()) {
+		var categoryItemObj = {};
+		categoryItemObj.category_id = rows.fieldByName('category_id');
+		categoryItemObj.item_id = rows.fieldByName('item_id');
+		var creationDate = new Date(rows.fieldByName('created_at'));
+		categoryItemObj.created_at = creationDate.toLocaleString();
+		var updateDate = new Date(rows.fieldByName('updated_at'));
+		categoryItemObj.updated_at = updateDate.toLocaleString();
+		res.push(categoryItemObj);
+		rows.next();
+	}
+	rows.close();
+	this.close();
+	return res;
+};
+
+
+exports.getCheckedStatus = function(destination_id, item_id) {
 	this.open();
 	var rows = this.db.execute('SELECT * FROM destination_item WHERE destination_id = ? and item_id = ?', destination_id, item_id);
 	var isChecked = rows.fieldByName('checked');
@@ -210,7 +321,7 @@ exports.getCheckedStatus = function(destination_id, item_id){
 	return isChecked;
 };
 
-exports.updateCheckedStatus = function(destination_id, item_id){
+exports.updateCheckedStatus = function(destination_id, item_id) {
 	var isChecked = this.getCheckedStatus(destination_id, item_id);
 	this.open();
 	var res = this.db.execute('UPDATE destination_item set checked = ?, updated_at = ? WHERE destination_id = ? and item_id = ?',
@@ -221,7 +332,7 @@ exports.updateCheckedStatus = function(destination_id, item_id){
 	return true;
 };
 
-exports.addDestination = function(destinationName){
+exports.addDestination = function(destinationName) {
 	this.open();
 	var now = this.getUnixtime();
 	var res = this.db.execute(
@@ -233,7 +344,25 @@ exports.addDestination = function(destinationName){
 	return true;
 };
 
-exports.deleteDestination = function(destination_id){
+exports.addItem = function(item_name, category_id) {
+	//add item into item table
+	this.open();
+	var res = this.db.execute(
+		'INSERT INTO item (name) VALUES (?)', item_name
+	);
+	Ti.API.debug('----------------Add to item---------------------');
+	Ti.API.debug('Add to item');
+	Ti.API.debug('res: ' + res);
+	this.close();
+
+	//get item_id
+
+	//add to category_item
+
+	return true;
+};
+
+exports.deleteDestination = function(destination_id) {
 	this.open();
 	this.db.execute('begin transaction');
 	this.db.execute(
