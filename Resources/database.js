@@ -347,17 +347,30 @@ exports.addDestination = function(destinationName) {
 exports.addItem = function(item_name, category_id) {
 	//add item into item table
 	this.open();
-	var res = this.db.execute(
+	this.db.execute(
 		'INSERT INTO item (name) VALUES (?)', item_name
 	);
 	Ti.API.debug('----------------Add to item---------------------');
 	Ti.API.debug('Add to item');
-	Ti.API.debug('res: ' + res);
 	this.close();
 
 	//get item_id
+	this.open();
+	var rows = this.db.execute(
+		'SELECT MAX(item_id) FROM item'
+	);
+	var item_id = rows.field(0);
+	Ti.API.debug('item_id: ' + item_id);
+	this.close();
 
 	//add to category_item
+	this.open();
+	var now = this.getUnixtime();
+	this.db.execute(
+		'INSERT INTO category_item (category_id, item_id, updated_at, created_at) VALUES (?, ?, ?, ?)',
+		category_id, item_id, now, now
+	);
+	this.close();
 
 	return true;
 };
