@@ -7,9 +7,10 @@ function CategoryWindow() {
 
 	var db = require('database');
 
+	var categories = [];
 	var refresh = function() {
 		tableView.data = null;
-		var categories = db.selectAllCategory();
+		categories = db.selectAllCategory();
 		for (var i=0; i<categories.length; i++) {
 			var category = categories[i];
 			var row = Titanium.UI.createTableViewRow({hasChild: true});
