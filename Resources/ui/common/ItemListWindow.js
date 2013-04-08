@@ -3,7 +3,7 @@ function ItemListWindow(category_id, name) {
 			category_id: category_id,
 			title: name
 	});
-	var tableView = Titanium.UI.createTableView();
+	var tableView = Titanium.UI.createTableView({editable: true});
 
 	Ti.API.debug('------------ ItemListWindow ------------');
 	var db = require('database');
@@ -16,10 +16,10 @@ function ItemListWindow(category_id, name) {
 			itemMap[items[i].item_id] = items[i];
 		}
 		Ti.API.debug(items);
-		Ti.API.debug('itemMap: ' + itemMap);
+		Ti.API.debug(itemMap);
 		var categoryItems = db.selectCategoryItemById(category_id);
 		Ti.API.debug('category_id: ' + category_id);
-		Ti.API.debug('categoryItems: ' + categoryItems);
+		Ti.API.debug(categoryItems);
 
 		for (var i=0; i<categoryItems.length; i++) {
 			var categoryItem = categoryItems[i];
@@ -31,12 +31,19 @@ function ItemListWindow(category_id, name) {
 				width: 300,
 				height: 'auto'
 			}));
+			row.item_id = categoryItem.category_id;
+			row.item_id = categoryItem.item_id;
 			tableView.appendRow(row);
 		}
 	};
 
 	tableView.addEventListener('click', function(e) {
 		//アイテムが選択された時の処理
+	});
+
+	tableView.addEventListener('delete', function(e) {
+		db.deleteItem(e.row.category_id, e.row.item_id);
+		refresh();
 	});
 
 	Titanium.App.addEventListener('addItem', function() {

@@ -28,7 +28,7 @@ exports.setTable = function() {
 	this.insertInitialDestination();
 
 	this.open();
-	//	this.db.execute('DROP TABLE destination_item');
+//	this.db.execute('DROP TABLE destination_item');
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS destination_item ('
 		+ 'destination_id INTEGER,'
@@ -42,7 +42,7 @@ exports.setTable = function() {
 	this.insertInitialDestinationItem();
 
 	this.open();
-	//this.db.execute('DROP TABLE item');
+//	this.db.execute('DROP TABLE item');
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS item ('
 		+ 'item_id INTEGER PRIMARY KEY AUTOINCREMENT,'
@@ -65,7 +65,7 @@ exports.setTable = function() {
 	this.insertInitialCategory();
 
 	this.open();
-	//this.db.execute('DROP TABLE category_item');
+//	this.db.execute('DROP TABLE category_item');
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS category_item ('
 		+ 'category_id INTEGER,'
@@ -404,11 +404,29 @@ exports.deleteDestinationItem = function(destination_id, item_id) {
 	this.open();
 	this.db.execute('begin transaction');
 	this.db.execute(
-		'DELETE FROM destination_item WHERE destination_id = ? and item_id = ?',
+		'DELETE FROM destination_item WHERE destination_id = ? AND item_id = ?',
 		destination_id, item_id
 	);
 	this.db.execute('commit');
 	Ti.API.debug('delete from destination_item');
+	this.close();
+	return true;
+};
+
+exports.deleteItem = function(category_id, item_id) {
+	this.open();
+	this.db.execute('begin transaction');
+	this.db.execute(
+		'DELETE FROM item WHERE item_id = ?', item_id
+	);
+	this.db.execute(
+		'DELETE FROM category_item WHERE item_id = ?', item_id
+	);
+	this.db.execute(
+		'DELETE FROM destination_item WHERE item_id = ?', item_id
+	);
+	this.db.execute('commit');
+	Ti.API.debug('delete from item and category_item');
 	this.close();
 	return true;
 };
