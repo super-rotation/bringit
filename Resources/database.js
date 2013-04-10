@@ -251,6 +251,17 @@ exports.selectDestinationItemById = function(destination_id) {
 	return res;
 };
 
+exports.countDestinationItemByIds = function(destination_id, item_id) {
+	this.open();
+	var rows = this.db.execute(
+		'SELECT COUNT(*) FROM destination_item WHERE destination_id = ? and item_id = ?',
+		destination_id, item_id
+	);
+	var count = rows.field(0);
+	this.close();
+	return count;
+};
+
 exports.selectAllItem = function () {
 	this.open();
 	var rows = this.db.execute('SELECT * FROM item');
@@ -366,7 +377,18 @@ exports.addItem = function(item_name, category_id) {
 	);
 	this.db.execute('commit');
 	this.close();
+	return true;
+};
 
+exports.addDestinationItem = function(destination_id, item_id) {
+	this.open();
+	var now = this.getUnixtime();
+	var res = this.db.execute(
+		'INSERT INTO destination_item (destination_id, item_id, checked, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
+		destination_id, item_id , 0, now, now
+	);
+	Ti.API.debug('Add to destination_item');
+	this.close();
 	return true;
 };
 

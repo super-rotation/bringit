@@ -1,4 +1,4 @@
-function CategoryWindow() {
+function CategoryWindow(destination_id) {
 	 var self = Ti.UI.createWindow({
 			title: '追加アイテム選択',
 			backgroundColor: '#fff'
@@ -26,11 +26,25 @@ function CategoryWindow() {
 	};
 
 	tableView.addEventListener('click', function(e) {
-		Titanium.App.fireEvent("openItemList", {
-			category_id: categories[e.index].category_id,
-			name: categories[e.index].name
-		});
+		var category_id = categories[e.index].category_id;
+		var category_name = categories[e.index].name;
+		var ItemListWindow = require ('ui/common/ItemListWindow');
+		var itemListWindow = new ItemListWindow(category_id, category_name, destination_id);
+		Titanium.App.navGroup.open(itemListWindow);
 	});
+
+	var addingButton = Ti.UI.createButton({
+		systemButton: Titanium.UI.iPhone.SystemButton.ADD
+	});
+	addingButton.addEventListener('click', function () {
+		var AddingWindow = require('ui/common/AddingWindow');
+		var addingWindow = new AddingWindow('カテゴリーを追加', 'category');
+			Titanium.App.navGroup.open(addingWindow, {animated: true});
+			Titanium.App.addEventListener('addCategory', function() {
+				Titanium.App.navGroup.close(addingWindow, {animated: true});
+			});
+	});
+	self.rightNavButton = addingButton;
 
 	Titanium.App.addEventListener('addCategory', function() {
 		refresh();

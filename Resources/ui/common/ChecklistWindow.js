@@ -57,7 +57,8 @@ function ChecklistWindow(destination_id, name) {
 			if (db.getCheckedStatus(checkbox.destination_id, checkbox.item_id)) {
 				checkbox.on();
 				Ti.API.debug('checkbox on');
-			} else {
+			}
+			else {
 				checkbox.off();
 				Ti.API.debug('checkbox off');
 			}
@@ -83,9 +84,18 @@ function ChecklistWindow(destination_id, name) {
 		refresh();
 	});
 
+	var addingItemButton = Ti.UI.createButton({
+		systemButton: Titanium.UI.iPhone.SystemButton.ADD
+	});
+	addingItemButton.addEventListener('click', function () {
+		var CategoryWindow = require('ui/common/CategoryWindow');
+		var categoryWindow = new CategoryWindow(destination_id);
+		Titanium.App.navGroup.open(categoryWindow);
+	});
+	self.rightNavButton = addingItemButton;
 
-	Titanium.App.addEventListener('openChecklist', function(data) {
-		Ti.API.debug('------------ open checklist ------------');
+	Titanium.App.addEventListener('updateItemStatus', function(data) {
+		Ti.API.debug('------------ updateItemStatus ------------');
 		refresh();
 	});
 
