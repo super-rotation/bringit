@@ -413,12 +413,12 @@ exports.deleteDestinationItem = function(destination_id, item_id) {
 		destination_id, item_id
 	);
 	this.db.execute('commit');
-	Ti.API.debug('delete from destination_item');
+	Ti.API.debug('delete from destination_item. destination_id: ' + destination_id + ' item_id: ' + item_id);
 	this.close();
 	return true;
 };
 
-exports.deleteItem = function(category_id, item_id) {
+exports.deleteItem = function(item_id) {
 	this.open();
 	this.db.execute('begin transaction');
 	this.db.execute(
@@ -431,7 +431,7 @@ exports.deleteItem = function(category_id, item_id) {
 		'DELETE FROM destination_item WHERE item_id = ?', item_id
 	);
 	this.db.execute('commit');
-	Ti.API.debug('delete from item and category_item');
+	Ti.API.debug('delete from item and category_item. item_id: ' + item_id);
 	this.close();
 	return true;
 };

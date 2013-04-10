@@ -21,18 +21,19 @@ function ItemListWindow(category_id, name, destination_id) {
 		Ti.API.debug('category_id: ' + category_id);
 		Ti.API.debug(categoryItems);
 
+		Ti.API.debug('-------------- ItemListWindow --------------');
 		for (var i=0; i<categoryItems.length; i++) {
 			var categoryItem = categoryItems[i];
-			var row = Titanium.UI.createTableViewRow();
+			var row = Titanium.UI.createTableViewRow({item_id: categoryItem.item_id});
 			row.add(Titanium.UI.createLabel({
 				text: itemMap[categoryItem.item_id].name,
 				top: 10,
 				left: 50,
 				width: 300,
-				height: 'auto'
+				height: 'auto',
+				item_id: categoryItem.item_id,
+				category_id: categoryItem.category_id
 			}));
-			row.item_id = categoryItem.category_id;
-			row.item_id = categoryItem.item_id;
 			var checkbox = Titanium.UI.createButton({
 				title: '',
 				top: 5,
@@ -45,8 +46,9 @@ function ItemListWindow(category_id, name, destination_id) {
 				backgroundColor: '#fff',
 				backgroundImage: 'none',
 				color: '#fff',
-				font:{fontSize: 25, fontWeight: 'bold'},
-				value: false //value is a custom property in this casehere.
+				font: {fontSize: 25, fontWeight: 'bold'},
+				value: false, //value is a custom property in this casehere.
+				item_id: categoryItem.item_id
 			});
 			checkbox.on = function() {
 				this.backgroundColor = '#aaa';
@@ -56,7 +58,7 @@ function ItemListWindow(category_id, name, destination_id) {
 				this.backgroundColor = '#fff';
 				this.value = false;
 			};
-			if (db.countDestinationItemByIds(destination_id, row.item_id)) {
+			if (db.countDestinationItemByIds(destination_id, checkbox.item_id)) {
 				checkbox.on();
 				Ti.API.debug('checkbox on');
 			}
@@ -69,11 +71,11 @@ function ItemListWindow(category_id, name, destination_id) {
 				Ti.API.debug(e);
 				if(false == e.source.value){
 					e.source.on();
-					db.addDestinationItem(destination_id, row.item_id);
+					db.addDestinationItem(destination_id, e.source.item_id);
 				}
 				else {
 					e.source.off();
-					db.deleteDestinationItem(destination_id, row.item_id);
+					db.deleteDestinationItem(destination_id, e.source.item_id);
 				}
 				Titanium.App.fireEvent('updateItemStatus');
 			});
@@ -83,8 +85,12 @@ function ItemListWindow(category_id, name, destination_id) {
 	};
 
 	tableView.addEventListener('delete', function(e) {
-		db.deleteItem(e.row.category_id, e.row.item_id);
+		Ti.API.debug('----------- delete from itemList ----------');
+		Ti.API.debug('item_id: ' + e.source.item_id);
+		Ti.API.debug(e);
+		db.deleteItem(e.source.item_id);
 		refresh();
+		Titanium.App.fireEvent('deleteItem');
 	});
 
 	var addingButton = Ti.UI.createButton({

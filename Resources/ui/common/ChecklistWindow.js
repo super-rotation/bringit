@@ -99,6 +99,11 @@ function ChecklistWindow(destination_id, name) {
 		refresh();
 	});
 
+	Titanium.App.addEventListener('deleteItem', function(data) {
+		Ti.API.debug('------------ deleteItem ------------');
+		refresh();
+	});
+
 	refresh();
 
 	return self;
