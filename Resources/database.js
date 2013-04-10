@@ -17,7 +17,11 @@ exports.getUnixtime = function() {
 
 exports.setTable = function() {
 	this.open();
-//	this.db.execute('DROP TABLE destination');
+	// this.db.execute('DROP TABLE destination');
+	// this.db.execute('DROP TABLE destination_item');
+	// this.db.execute('DROP TABLE item');
+	// this.db.execute('DROP TABLE category');
+	// this.db.execute('DROP TABLE category_item');
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS destination ('
 		+ 'destination_id INTEGER PRIMARY KEY AUTOINCREMENT,'
@@ -28,7 +32,6 @@ exports.setTable = function() {
 	this.insertInitialDestination();
 
 	this.open();
-//	this.db.execute('DROP TABLE destination_item');
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS destination_item ('
 		+ 'destination_id INTEGER,'
@@ -42,7 +45,6 @@ exports.setTable = function() {
 	this.insertInitialDestinationItem();
 
 	this.open();
-//	this.db.execute('DROP TABLE item');
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS item ('
 		+ 'item_id INTEGER PRIMARY KEY AUTOINCREMENT,'
@@ -53,7 +55,6 @@ exports.setTable = function() {
 	this.insertInitialItem();
 
 	this.open();
-//	this.db.execute('DROP TABLE category');
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS category ('
 		+ 'category_id INTEGER PRIMARY KEY AUTOINCREMENT,'
@@ -65,7 +66,6 @@ exports.setTable = function() {
 	this.insertInitialCategory();
 
 	this.open();
-//	this.db.execute('DROP TABLE category_item');
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS category_item ('
 		+ 'category_id INTEGER,'
@@ -157,11 +157,19 @@ exports.insertInitialCategory = function() {
 	var now = this.getUnixtime();
 	var res = this.db.execute(
 		'INSERT INTO category (category_id, name, created_at, updated_at)'
-		+ ' VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)',
-		_initialCategoryId    , '洗面用具', now, now,
-		_initialCategoryId + 1, '衣類', now, now,
-		_initialCategoryId + 2, '電化製品', now, now,
-		_initialCategoryId + 3, 'マイアイテム', now, now
+		+ ' VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), '
+		+ '(?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)',
+		_initialCategoryId    , '貴重品', now, now,
+		_initialCategoryId + 1, '電化製品', now, now,
+		_initialCategoryId + 2, '化粧品・洗面用具', now, now,
+		_initialCategoryId + 3, '衣類', now, now,
+		_initialCategoryId + 4, 'アクセサリー', now, now,
+		_initialCategoryId + 5, '生活用品', now, now,
+		_initialCategoryId + 6, '文房具', now, now,
+		_initialCategoryId + 7, '薬・医療品', now, now,
+		_initialCategoryId + 8, 'アウトドア', now, now,
+		_initialCategoryId + 9, 'スポーツ用品', now, now,
+		_initialCategoryId + 10, 'その他', now, now
 	);
 	Ti.API.debug('Add to category');
 	this.close();
