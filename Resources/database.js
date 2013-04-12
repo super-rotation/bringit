@@ -268,9 +268,7 @@ exports.countDestinationItemByIds = function(destination_id, item_id) {
 	return count;
 };
 
-exports.selectAllItem = function () {
-	this.open();
-	var rows = this.db.execute('SELECT * FROM item');
+exports.setItemObj = function(rows) {
 	var res = [];
 	while (rows.isValidRow()) {
 		var itemObj = {};
@@ -280,9 +278,35 @@ exports.selectAllItem = function () {
 		res.push(itemObj);
 		rows.next();
 	}
+	return res;
+};
+
+exports.selectAllItem = function () {
+	this.open();
+	var rows = this.db.execute('SELECT * FROM item');
+	var res = this.setItemObj(rows);
 	rows.close();
 	this.close();
 	return res;
+};
+
+exports.selectItemById = function(item_id) {
+	this.open();
+	var rows = this.db.execute('SELECT * FROM item WHERE item_id = ?', item_id);
+	var res = this.setItemObj(rows);
+	rows.close();
+	this.close();
+	return res[0];
+};
+
+exports.updateItemById = function(name, memo, item_id) {
+	this.open();
+	var res = this.db.execute(
+		'UPDATE item SET name = ?, memo = ? WHERE item_id = ?',
+		name, memo, item_id
+	);
+	this.close();
+	return true;
 };
 
 exports.selectAllCategory = function() {

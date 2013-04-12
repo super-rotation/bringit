@@ -37,8 +37,8 @@ function CategoryWindow(destination_id) {
 		systemButton: Titanium.UI.iPhone.SystemButton.ADD
 	});
 	addButton.addEventListener('click', function () {
-		var addWindow = require('ui/common/addWindow');
-		var addWindow = new addWindow('カテゴリーを追加', 'category');
+		var AddWindow = require('ui/common/AddWindow');
+		var addWindow = new AddWindow('カテゴリーを追加', 'category');
 			Titanium.App.navGroup.open(addWindow, {animated: true});
 			Titanium.App.addEventListener('addCategory', function() {
 				Titanium.App.navGroup.close(addWindow, {animated: true});

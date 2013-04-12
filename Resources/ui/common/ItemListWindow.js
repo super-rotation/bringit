@@ -93,12 +93,21 @@ function ItemListWindow(category_id, name, destination_id) {
 		Titanium.App.fireEvent('deleteItem');
 	});
 
+	tableView.addEventListener('click', function(e) {
+		var EditWindow = require('ui/common/EditWindow');
+		var editWindow = new EditWindow(e.source.text, e.source.item_id);
+		Titanium.App.navGroup.open(editWindow, {animated: true});
+		Titanium.App.addEventListener('editItem', function() {
+			Titanium.App.navGroup.close(editWindow, {animated: true});
+		});
+	}) ;
+
 	var addButton = Ti.UI.createButton({
 		systemButton: Titanium.UI.iPhone.SystemButton.ADD
 	});
 	addButton.addEventListener('click', function () {
-		var addWindow = require('ui/common/addWindow');
-		var addWindow = new addWindow('アイテムを追加', 'item', category_id);
+		var AddWindow = require('ui/common/AddWindow');
+		var addWindow = new AddWindow('アイテムを追加', 'item', category_id);
 		Titanium.App.navGroup.open(addWindow, {animated: true});
 		Titanium.App.addEventListener('addItem', function() {
 			Titanium.App.navGroup.close(addWindow, {animated: true});
@@ -106,8 +115,10 @@ function ItemListWindow(category_id, name, destination_id) {
 	});
 	self.rightNavButton = addButton;
 
-
 	Titanium.App.addEventListener('addItem', function() {
+		refresh();
+	});
+	Titanium.App.addEventListener('editItem', function() {
 		refresh();
 	});
 
