@@ -18,18 +18,18 @@ function ApplicationWindow() {
 	});
 	firstViewContainerWindow.add(firstView);
 
-	var addingButton = Titanium.UI.createButton({
+	var addButton = Titanium.UI.createButton({
 		systemButton: Titanium.UI.iPhone.SystemButton.ADD
 	});
-	addingButton.addEventListener('click', function () {
-		var AddingWindow = require('ui/common/AddingWindow');
-		var addingWindow = new AddingWindow('行き先を追加', 'destination');
-		Titanium.App.navGroup.open(addingWindow, {animated: true});
+	addButton.addEventListener('click', function () {
+		var addWindow = require('ui/common/addWindow');
+		var addWindow = new addWindow('行き先を追加', 'destination');
+		Titanium.App.navGroup.open(addWindow, {animated: true});
 		Titanium.App.addEventListener('addDestination', function() {
-			Titanium.App.navGroup.close(addingWindow, {animated: true});
+			Titanium.App.navGroup.close(addWindow, {animated: true});
 		});
 	});
-	firstViewContainerWindow.rightNavButton = addingButton;
+	firstViewContainerWindow.rightNavButton = addButton;
 
 
 	Titanium.App.navGroup = Titanium.UI.iPhone.createNavigationGroup({

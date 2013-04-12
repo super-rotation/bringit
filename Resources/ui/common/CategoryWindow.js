@@ -33,18 +33,18 @@ function CategoryWindow(destination_id) {
 		Titanium.App.navGroup.open(itemListWindow);
 	});
 
-	var addingButton = Ti.UI.createButton({
+	var addButton = Ti.UI.createButton({
 		systemButton: Titanium.UI.iPhone.SystemButton.ADD
 	});
-	addingButton.addEventListener('click', function () {
-		var AddingWindow = require('ui/common/AddingWindow');
-		var addingWindow = new AddingWindow('カテゴリーを追加', 'category');
-			Titanium.App.navGroup.open(addingWindow, {animated: true});
+	addButton.addEventListener('click', function () {
+		var addWindow = require('ui/common/addWindow');
+		var addWindow = new addWindow('カテゴリーを追加', 'category');
+			Titanium.App.navGroup.open(addWindow, {animated: true});
 			Titanium.App.addEventListener('addCategory', function() {
-				Titanium.App.navGroup.close(addingWindow, {animated: true});
+				Titanium.App.navGroup.close(addWindow, {animated: true});
 			});
 	});
-	self.rightNavButton = addingButton;
+	self.rightNavButton = addButton;
 
 	Titanium.App.addEventListener('addCategory', function() {
 		refresh();
