@@ -158,18 +158,16 @@ exports.insertInitialCategory = function() {
 	var res = this.db.execute(
 		'INSERT INTO category (category_id, name, created_at, updated_at)'
 		+ ' VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), '
-		+ '(?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)',
+		+ '(?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)',
 		_initialCategoryId    , '貴重品', now, now,
 		_initialCategoryId + 1, '電化製品', now, now,
 		_initialCategoryId + 2, '化粧品・洗面用具', now, now,
-		_initialCategoryId + 3, '衣類', now, now,
-		_initialCategoryId + 4, 'アクセサリー', now, now,
-		_initialCategoryId + 5, '生活用品', now, now,
-		_initialCategoryId + 6, '文房具', now, now,
-		_initialCategoryId + 7, '薬・医療品', now, now,
-		_initialCategoryId + 8, 'アウトドア', now, now,
-		_initialCategoryId + 9, 'スポーツ用品', now, now,
-		_initialCategoryId + 10, 'その他', now, now
+		_initialCategoryId + 3, '衣類・アクセサリー', now, now,
+		_initialCategoryId + 4, '文房具', now, now,
+		_initialCategoryId + 5, '薬・医療品', now, now,
+		_initialCategoryId + 6, 'アウトドア', now, now,
+		_initialCategoryId + 7, 'スポーツ用品', now, now,
+		_initialCategoryId + 8, 'その他', now, now
 	);
 	Ti.API.debug('Add to category');
 	this.close();
