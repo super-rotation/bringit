@@ -33,8 +33,6 @@ function ChecklistWindow(destination_id, name) {
 			var memo = '';
 			var maxLength = 17;
 			if (item.memo.length >= maxLength) {
-				Ti.API.debug('-------------- memo length -------------');
-				Ti.API.debug('memo length: ' + item.memo.length);
 				memo = item.memo.substring(0, maxLength) + '...';
 			}
 			row.add(Titanium.UI.createLabel({
@@ -63,10 +61,12 @@ function ChecklistWindow(destination_id, name) {
 			checkbox.on = function(){
 				this.backgroundImage = 'dark_check-2.png';
 				this.value = true;
+				Titanium.App.fireEvent('updateCheckbox');
 			};
 			checkbox.off = function(){
 				this.backgroundImage = 'light_circle.png';
 				this.value = false;
+				Titanium.App.fireEvent('updateCheckbox');
 			};
 			if (db.getCheckedStatus(checkbox.destination_id, checkbox.item_id)) {
 				checkbox.on();
