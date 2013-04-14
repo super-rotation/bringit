@@ -26,6 +26,7 @@ exports.setTable = function() {
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS destination ('
 		+ 'destination_id INTEGER PRIMARY KEY AUTOINCREMENT,'
+		+ 'icon_id INTEGER NOT NULL,'
 		+ 'name TEXT, created_at INTEGER NOT NULL,'
 		+ 'updated_at INTEGER NOT NULL)'
 	);
@@ -82,17 +83,16 @@ exports.insertInitialDestination = function(){
 	this.open();
 	var rows = this.db.execute('SELECT COUNT(*) FROM destination');
 	if (rows.field(0)) {
-		Ti.API.debug('destination table already has records');
 		this.close();
 		return true;
 	}
 	var now = this.getUnixtime();
 	var res = this.db.execute(
-		'INSERT INTO destination (destination_id, name, created_at, updated_at)'
-		+ ' VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?)',
-		_initialDestinationId, '実家', now, now,
-		_initialDestinationId + 1, 'スノーボード', now, now,
-		_initialDestinationId + 2, '聖地巡礼', now, now
+		'INSERT INTO destination (destination_id, icon_id, name, created_at, updated_at)'
+		+ ' VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)',
+		_initialDestinationId    , 10002, '実家（サンプル）', now, now,
+		_initialDestinationId + 1, 10004, 'キャンプ（サンプル）', now, now,
+		_initialDestinationId + 2, 10007, '聖地巡礼（サンプル）', now, now
 	);
 	this.close();
 	return true;
@@ -102,7 +102,6 @@ exports.insertInitialDestinationItem = function() {
 	this.open();
 	var rows = this.db.execute('SELECT COUNT(*) FROM destination_item');
 	if (rows.field(0)) {
-		Ti.API.debug('destination_item table already has records');
 		this.close();
 		return true;
 	}
@@ -123,7 +122,6 @@ exports.insertInitialItem = function() {
 	this.open();
 	var rows = this.db.execute('SELECT COUNT(*) FROM item');
 	if (rows.field(0)) {
-		Ti.API.debug('item table already has records');
 		this.close();
 		return true;
 	}
@@ -270,7 +268,6 @@ exports.insertInitialItem = function() {
 		_initialItemId + 802, '食べ物', '',
 		_initialItemId + 803, 'ビニール', ''
 	);
-	Ti.API.debug('Add to item');
 	this.close();
 	return true;
 };
@@ -278,9 +275,7 @@ exports.insertInitialItem = function() {
 exports.insertInitialCategory = function() {
 	this.open();
 	var rows = this.db.execute('SELECT COUNT(*) FROM category');
-	Ti.API.debug('row ' + rows.field(0));
 	if (rows.field(0)) {
-		Ti.API.debug('category table already has records');
 		this.close();
 		return true;
 	}
@@ -453,7 +448,6 @@ exports.insertInitialCategoryItem = function() {
 		_initialCategoryId + 8, _initialItemId + 802, now, now,
 		_initialCategoryId + 8, _initialItemId + 803, now, now
 	);
-	Ti.API.debug('Add to category_item');
 	this.close();
 	return true;
 };
@@ -465,15 +459,13 @@ exports.selectAllDestination = function() {
 	while (rows.isValidRow()) {
 		var destObj = {};
 		destObj.destination_id = rows.fieldByName('destination_id');
+		destObj.icon_id = rows.fieldByName('icon_id');
 		destObj.name = rows.fieldByName('name');
 		destObj.created_at = rows.fieldByName('created_at');
 		destObj.updated_at = rows.fieldByName('updated_at');
 		res.push(destObj);
 		rows.next();
 	}
-	Ti.API.debug('--------------- destObj ------------------------');
-	Ti.API.debug('Found: ' + rows.getRowCount());
-	Ti.API.debug(res);
 	rows.close();
 	this.close();
 	return res;
@@ -498,9 +490,6 @@ exports.selectAllDestinationItem = function(){
 	this.open();
 	var rows = this.db.execute('SELECT * FROM destination_item ORDER BY created_at');
 	var res = this.setDestItemObj(rows);
-	Ti.API.debug('--------------- destItemObj ------------------------');
-	Ti.API.debug('Found: ' + rows.getRowCount());
-	Ti.API.debug(res);
 	rows.close();
 	this.close();
 	return res;
@@ -510,9 +499,6 @@ exports.selectDestinationItemById = function(destination_id) {
 	this.open();
 	var rows = this.db.execute('SELECT * FROM destination_item WHERE destination_id = ? ORDER BY created_at', destination_id);
 	var res = this.setDestItemObj(rows);
-	Ti.API.debug('--------------- destItemObj ------------------------');
-	Ti.API.debug('Found: ' + rows.getRowCount());
-	Ti.API.debug(res);
 	rows.close();
 	this.close();
 	return res;

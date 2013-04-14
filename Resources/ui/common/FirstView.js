@@ -13,6 +13,19 @@ function FirstView() {
 		return checkedNum;
 	};
 
+	var iconMap = {
+		10000: 'airplain',
+		10001: 'automobile',
+		10002: 'home',
+		10003: 'bldg',
+		10004: 'flame',
+		10005: 'heart',
+		10006: 'book',
+		10007: 'camera',
+		10008: 'cart',
+		10009: 'pegman'
+	};
+
 	var refresh = function() {
 		self.data = null;
 		var destLists = db.selectAllDestination();
@@ -46,7 +59,7 @@ function FirstView() {
 				left: 10,
 				width: 30,
 				height: 'auto',
-				backgroundImage: 'image/dark_airplane.png',
+				backgroundImage: 'image/dark_' + iconMap[destList.icon_id] + '.png',
 				font:{fontSize: 25, fontWeight: 'bold'}
 			}));
 			if (unfinishedNum === 0　&& checkedNum > 0) {
