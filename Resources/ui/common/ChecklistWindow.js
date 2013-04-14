@@ -35,11 +35,7 @@ function ChecklistWindow(destination_id, name) {
 				left: 10,
 				width: 30,
 				height: 'auto',
-				borderColor: '#666',
-				borderWidth: 2,
-				borderRadius: 15,
-				backgroundColor: '#fff',
-				backgroundImage: 'none',
+				backgroundImage: 'dark_circle.png',
 				color: '#fff',
 				font:{fontSize: 25, fontWeight: 'bold'},
 				value: false //value is a custom property in this casehere.
@@ -47,11 +43,11 @@ function ChecklistWindow(destination_id, name) {
 			checkbox.destination_id = checklist.destination_id;
 			checkbox.item_id = checklist.item_id;
 			checkbox.on = function(){
-				this.backgroundColor = '#aaa';
+				this.backgroundImage = 'dark_check-2.png';
 				this.value = true;
 			};
 			checkbox.off = function(){
-				this.backgroundColor = '#fff';
+				this.backgroundImage = 'dark_circle.png';
 				this.value = false;
 			};
 			if (db.getCheckedStatus(checkbox.destination_id, checkbox.item_id)) {
