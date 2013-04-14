@@ -93,13 +93,19 @@ function ItemListWindow(category_id, name, destination_id) {
 		Titanium.App.fireEvent('deleteItem');
 	});
 
+var _checkboxSize = 50;
+
 	tableView.addEventListener('click', function(e) {
-		var EditWindow = require('ui/common/EditWindow');
-		var editWindow = new EditWindow(e.source.text, e.source.item_id);
-		Titanium.App.navGroup.open(editWindow, {animated: true});
-		Titanium.App.addEventListener('editItem', function() {
-			Titanium.App.navGroup.close(editWindow, {animated: true});
-		});
+		if (e.x > _checkboxSize) {
+			Ti.API.debug('----------- click on itemList ----------');
+			Ti.API.debug(e);
+			var EditWindow = require('ui/common/EditWindow');
+			var editWindow = new EditWindow(e.source.text, e.source.item_id);
+			Titanium.App.navGroup.open(editWindow, {animated: true});
+			Titanium.App.addEventListener('editItem', function() {
+				Titanium.App.navGroup.close(editWindow, {animated: true});
+			});
+		}
 	}) ;
 
 	var addButton = Ti.UI.createButton({
