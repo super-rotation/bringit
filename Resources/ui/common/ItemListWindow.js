@@ -24,9 +24,10 @@ function ItemListWindow(category_id, name, destination_id) {
 		Ti.API.debug('-------------- ItemListWindow --------------');
 		for (var i=0; i<categoryItems.length; i++) {
 			var categoryItem = categoryItems[i];
+			var item = itemMap[categoryItem.item_id];
 			var row = Titanium.UI.createTableViewRow({item_id: categoryItem.item_id});
 			row.add(Titanium.UI.createLabel({
-				text: itemMap[categoryItem.item_id].name,
+				text: item.name,
 				top: 10,
 				left: 50,
 				width: 300,
@@ -34,9 +35,20 @@ function ItemListWindow(category_id, name, destination_id) {
 				item_id: categoryItem.item_id,
 				category_id: categoryItem.category_id
 			}));
+			row.add(Titanium.UI.createLabel({
+				text: item.memo,
+				top: 30,
+				left: 50,
+				width: 300,
+				height: 'auto',
+				color: 'gray',
+				item_id: categoryItem.item_id,
+				category_id: categoryItem.category_id
+			}));
+			var top = (item.memo) ? 12 : 3;
 			var checkbox = Titanium.UI.createButton({
 				title: '',
-				top: 5,
+				top: top,
 				left: 10,
 				width: 30,
 				height: 'auto',
