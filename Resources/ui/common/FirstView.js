@@ -29,8 +29,6 @@ function FirstView() {
 				width: 300,
 				height: 'auto'
 			}));
-			Ti.API.debug('-------------destlist----------------');
-			Ti.API.debug(destList);
 			row.destination_id = destList.destination_id;
 			var unfinishedNum = destItems.length - checkedNum;
 			row.add(Titanium.UI.createLabel({
@@ -58,7 +56,6 @@ function FirstView() {
 	};
 
 	Titanium.App.addEventListener('addDestination', function(data) {
-		Ti.API.debug('------------ add destination ------------');
 		refresh(self);
 	});
 
@@ -67,9 +64,6 @@ function FirstView() {
 	});
 
 	self.addEventListener('delete', function(e) {
-		Ti.API.debug('---------- delete -------------');
-		Ti.API.debug(e.rowData);
-		Ti.API.debug(e.rowData.destination_id);
 		db.deleteDestination(e.row.destination_id);
 		refresh(self);
 	});

@@ -76,8 +76,6 @@ function editWindow(name, item_id) {
 		Titanium.App.fireEvent('editItem');
 	});
 
-
-
 	self.add(view);
 
 	return self;

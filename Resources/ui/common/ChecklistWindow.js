@@ -70,15 +70,11 @@ function ChecklistWindow(destination_id, name) {
 			};
 			if (db.getCheckedStatus(checkbox.destination_id, checkbox.item_id)) {
 				checkbox.on();
-				Ti.API.debug('checkbox on');
 			}
 			else {
 				checkbox.off();
-				Ti.API.debug('checkbox off');
 			}
 			checkbox.addEventListener('click', function(e){
-				Ti.API.debug('--------- checkbox -----------');
-				Ti.API.debug(e);
 				if(false == e.source.value){
 					e.source.on();
 				}
@@ -109,12 +105,10 @@ function ChecklistWindow(destination_id, name) {
 	self.rightNavButton = addItemButton;
 
 	Titanium.App.addEventListener('updateItemStatus', function(data) {
-		Ti.API.debug('------------ updateItemStatus ------------');
 		refresh();
 	});
 
 	Titanium.App.addEventListener('deleteItem', function(data) {
-		Ti.API.debug('------------ deleteItem ------------');
 		refresh();
 	});
 

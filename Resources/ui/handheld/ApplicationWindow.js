@@ -22,7 +22,7 @@ function ApplicationWindow() {
 		systemButton: Titanium.UI.iPhone.SystemButton.ADD
 	});
 	addButton.addEventListener('click', function () {
-		var AddWindow = require('ui/common/addWindow');
+		var AddWindow = require('ui/common/AddWindow');
 		var addWindow = new AddWindow('行き先を追加', 'destination');
 		Titanium.App.navGroup.open(addWindow, {animated: true});
 		Titanium.App.addEventListener('addDestination', function() {
@@ -30,7 +30,6 @@ function ApplicationWindow() {
 		});
 	});
 	firstViewContainerWindow.rightNavButton = addButton;
-
 
 	Titanium.App.navGroup = Titanium.UI.iPhone.createNavigationGroup({
 		window: firstViewContainerWindow

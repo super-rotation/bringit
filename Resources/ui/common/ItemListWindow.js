@@ -5,7 +5,6 @@ function ItemListWindow(category_id, name, destination_id) {
 	});
 	var tableView = Titanium.UI.createTableView({editable: true});
 
-	Ti.API.debug('------------ ItemListWindow ------------');
 	var db = require('database');
 
 	var refresh = function() {
@@ -15,13 +14,8 @@ function ItemListWindow(category_id, name, destination_id) {
 		for (var i=0; i<items.length; i++) {
 			itemMap[items[i].item_id] = items[i];
 		}
-		Ti.API.debug(items);
-		Ti.API.debug(itemMap);
 		var categoryItems = db.selectCategoryItemById(category_id);
-		Ti.API.debug('category_id: ' + category_id);
-		Ti.API.debug(categoryItems);
 
-		Ti.API.debug('-------------- ItemListWindow --------------');
 		for (var i=0; i<categoryItems.length; i++) {
 			var categoryItem = categoryItems[i];
 			var item = itemMap[categoryItem.item_id];
@@ -38,8 +32,6 @@ function ItemListWindow(category_id, name, destination_id) {
 			var memo = '';
 			var maxLength = 17;
 			if (item.memo.length >= maxLength) {
-				Ti.API.debug('-------------- memo length -------------');
-				Ti.API.debug('memo length: ' + item.memo.length);
 				memo = item.memo.substring(0, maxLength) + '...';
 			}
 			row.add(Titanium.UI.createLabel({
@@ -75,15 +67,11 @@ function ItemListWindow(category_id, name, destination_id) {
 			};
 			if (db.countDestinationItemByIds(destination_id, checkbox.item_id)) {
 				checkbox.on();
-				Ti.API.debug('checkbox on');
 			}
 			else {
 				checkbox.off();
-				Ti.API.debug('checkbox off');
 			};
 			checkbox.addEventListener('click', function(e) {
-				Ti.API.debug('--------- checkbox -----------');
-				Ti.API.debug(e);
 				if(false == e.source.value){
 					e.source.on();
 					db.addDestinationItem(destination_id, e.source.item_id);
@@ -100,9 +88,6 @@ function ItemListWindow(category_id, name, destination_id) {
 	};
 
 	tableView.addEventListener('delete', function(e) {
-		Ti.API.debug('----------- delete from itemList ----------');
-		Ti.API.debug('item_id: ' + e.source.item_id);
-		Ti.API.debug(e);
 		db.deleteItem(e.source.item_id);
 		refresh();
 		Titanium.App.fireEvent('deleteItem');
@@ -112,8 +97,6 @@ var _checkboxSize = 50;
 
 	tableView.addEventListener('click', function(e) {
 		if (e.x > _checkboxSize) {
-			Ti.API.debug('----------- click on itemList ----------');
-			Ti.API.debug(e);
 			var EditWindow = require('ui/common/EditWindow');
 			var editWindow = new EditWindow(e.source.text, e.source.item_id);
 			Titanium.App.navGroup.open(editWindow, {animated: true});
@@ -151,6 +134,3 @@ var _checkboxSize = 50;
 }
 
 module.exports = ItemListWindow;
-
-
-

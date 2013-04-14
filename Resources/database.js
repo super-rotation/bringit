@@ -81,7 +81,6 @@ exports.setTable = function() {
 exports.insertInitialDestination = function(){
 	this.open();
 	var rows = this.db.execute('SELECT COUNT(*) FROM destination');
-	Ti.API.debug('row: ' + rows.field(0));
 	if (rows.field(0)) {
 		Ti.API.debug('destination table already has records');
 		this.close();
@@ -95,7 +94,6 @@ exports.insertInitialDestination = function(){
 		_initialDestinationId + 1, 'スノーボード', now, now,
 		_initialDestinationId + 2, '聖地巡礼', now, now
 	);
-	Ti.API.debug('Add to destination');
 	this.close();
 	return true;
 };
@@ -103,7 +101,6 @@ exports.insertInitialDestination = function(){
 exports.insertInitialDestinationItem = function() {
 	this.open();
 	var rows = this.db.execute('SELECT COUNT(*) FROM destination_item');
-	Ti.API.debug('row: ' + rows.field(0));
 	if (rows.field(0)) {
 		Ti.API.debug('destination_item table already has records');
 		this.close();
@@ -118,7 +115,6 @@ exports.insertInitialDestinationItem = function() {
 		_initialDestinationId    , _initialItemId + 2, 0, now, now,
 		_initialDestinationId + 1, _initialItemId + 3, 0, now, now
 	);
-	Ti.API.debug('Add to destination_item');
 	this.close();
 	return true;
 };
@@ -126,7 +122,6 @@ exports.insertInitialDestinationItem = function() {
 exports.insertInitialItem = function() {
 	this.open();
 	var rows = this.db.execute('SELECT COUNT(*) FROM item');
-	Ti.API.debug('row ' + rows.field(0));
 	if (rows.field(0)) {
 		Ti.API.debug('item table already has records');
 		this.close();
@@ -304,7 +299,6 @@ exports.insertInitialCategory = function() {
 		_initialCategoryId + 7, 'スポーツ用品', now, now,
 		_initialCategoryId + 8, 'その他', now, now
 	);
-	Ti.API.debug('Add to category');
 	this.close();
 	return true;
 };
@@ -312,9 +306,7 @@ exports.insertInitialCategory = function() {
 exports.insertInitialCategoryItem = function() {
 	this.open();
 	var rows = this.db.execute('SELECT COUNT(*) FROM category_item');
-	Ti.API.debug('row: ' + rows.field(0));
 	if (rows.field(0)) {
-		Ti.API.debug('category_item table already has records');
 		this.close();
 		return true;
 	}
@@ -642,7 +634,6 @@ exports.addDestination = function(destinationName) {
 		'INSERT INTO destination (name, created_at, updated_at) VALUES (?, ?, ?)',
 		destinationName, now, now
 	);
-	Ti.API.debug('Add to destination');
 	this.close();
 	return true;
 };
@@ -654,7 +645,6 @@ exports.addCategory = function(name) {
 		'INSERT INTO category (name, created_at, updated_at) VALUES (?, ?, ?)',
 		name, now, now
 	);
-	Ti.API.debug('Add to category');
 	this.close();
 	return true;
 };
@@ -686,7 +676,6 @@ exports.addDestinationItem = function(destination_id, item_id) {
 		'INSERT INTO destination_item (destination_id, item_id, checked, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
 		destination_id, item_id , 0, now, now
 	);
-	Ti.API.debug('Add to destination_item');
 	this.close();
 	return true;
 };
@@ -699,7 +688,6 @@ exports.deleteDestination = function(destination_id) {
 		destination_id
 	);
 	this.db.execute('commit');
-	Ti.API.debug('delete from destination');
 	this.close();
 	return true;
 };
@@ -712,7 +700,6 @@ exports.deleteDestinationItem = function(destination_id, item_id) {
 		destination_id, item_id
 	);
 	this.db.execute('commit');
-	Ti.API.debug('delete from destination_item. destination_id: ' + destination_id + ' item_id: ' + item_id);
 	this.close();
 	return true;
 };
@@ -730,7 +717,6 @@ exports.deleteItem = function(item_id) {
 		'DELETE FROM destination_item WHERE item_id = ?', item_id
 	);
 	this.db.execute('commit');
-	Ti.API.debug('delete from item and category_item. item_id: ' + item_id);
 	this.close();
 	return true;
 };
