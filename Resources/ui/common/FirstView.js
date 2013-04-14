@@ -25,7 +25,7 @@ function FirstView() {
 			row.add(Titanium.UI.createLabel({
 				text: destList.name,
 				top: 10,
-				left: 10,
+				left: 50,
 				width: 300,
 				height: 'auto'
 			}));
@@ -39,6 +39,15 @@ function FirstView() {
 				height: 'auto',
 				color: 'gray',
 				font: {fontStyle: 'italic'}
+			}));
+			row.add(Titanium.UI.createButton({
+				title: '',
+				top: 12,
+				left: 10,
+				width: 30,
+				height: 'auto',
+				backgroundImage: 'image/dark_airplane.png',
+				font:{fontSize: 25, fontWeight: 'bold'}
 			}));
 			if (unfinishedNum === 0　&& checkedNum > 0) {
 				row.add(Titanium.UI.createButton({

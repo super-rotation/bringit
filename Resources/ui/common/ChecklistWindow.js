@@ -51,7 +51,7 @@ function ChecklistWindow(destination_id, name) {
 				left: 10,
 				width: 30,
 				height: 'auto',
-				backgroundImage: 'light_circle.png',
+				backgroundImage: 'image/light_circle.png',
 				color: '#fff',
 				font:{fontSize: 25, fontWeight: 'bold'},
 				value: false //value is a custom property in this casehere.
@@ -59,12 +59,12 @@ function ChecklistWindow(destination_id, name) {
 			checkbox.destination_id = checklist.destination_id;
 			checkbox.item_id = checklist.item_id;
 			checkbox.on = function(){
-				this.backgroundImage = 'dark_check-2.png';
+				this.backgroundImage = 'image/dark_check-2.png';
 				this.value = true;
 				Titanium.App.fireEvent('updateCheckbox');
 			};
 			checkbox.off = function(){
-				this.backgroundImage = 'light_circle.png';
+				this.backgroundImage = 'image/light_circle.png';
 				this.value = false;
 				Titanium.App.fireEvent('updateCheckbox');
 			};

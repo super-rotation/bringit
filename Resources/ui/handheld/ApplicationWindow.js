@@ -5,7 +5,7 @@ function ApplicationWindow() {
 	});
 
 	var firstViewContainerWindow = Titanium.UI.createWindow({
-		title: '用途'
+		title: '行き先'
 	});
 	var FirstView = require('ui/common/FirstView');
 	var firstView = new FirstView();
