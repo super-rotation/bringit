@@ -36,7 +36,7 @@ function ItemListWindow(category_id, name, destination_id) {
 				category_id: categoryItem.category_id
 			}));
 			var memo = '';
-			var maxLength = 14;
+			var maxLength = 17;
 			if (item.memo.length >= maxLength) {
 				Ti.API.debug('-------------- memo length -------------');
 				Ti.API.debug('memo length: ' + item.memo.length);
@@ -48,7 +48,8 @@ function ItemListWindow(category_id, name, destination_id) {
 				left: 50,
 				width: 300,
 				height: 'auto',
-				color: 'gray'
+				color: 'gray',
+				font: {fontStyle: 'italic'}
 			}));
 			var top = (item.memo) ? 12 : 3;
 			var checkbox = Titanium.UI.createButton({
