@@ -40,22 +40,19 @@ function ItemListWindow(category_id, name, destination_id) {
 				left: 10,
 				width: 30,
 				height: 'auto',
-				borderColor: '#666',
-				borderWidth: 2,
-				borderRadius: 15,
 				backgroundColor: '#fff',
-				backgroundImage: 'none',
+				backgroundImage: 'light_case.png',
 				color: '#fff',
 				font: {fontSize: 25, fontWeight: 'bold'},
 				value: false, //value is a custom property in this casehere.
 				item_id: categoryItem.item_id
 			});
 			checkbox.on = function() {
-				this.backgroundColor = '#aaa';
+				this.backgroundImage = 'dark_case.png';
 				this.value = true;
 			};
 			checkbox.off = function() {
-				this.backgroundColor = '#fff';
+				this.backgroundImage = 'light_case.png';
 				this.value = false;
 			};
 			if (db.countDestinationItemByIds(destination_id, checkbox.item_id)) {
