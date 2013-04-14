@@ -35,15 +35,20 @@ function ItemListWindow(category_id, name, destination_id) {
 				item_id: categoryItem.item_id,
 				category_id: categoryItem.category_id
 			}));
+			var memo = '';
+			var maxLength = 14;
+			if (item.memo.length >= maxLength) {
+				Ti.API.debug('-------------- memo length -------------');
+				Ti.API.debug('memo length: ' + item.memo.length);
+				memo = item.memo.substring(0, maxLength) + '...';
+			}
 			row.add(Titanium.UI.createLabel({
-				text: item.memo,
+				text: memo,
 				top: 30,
 				left: 50,
 				width: 300,
 				height: 'auto',
-				color: 'gray',
-				item_id: categoryItem.item_id,
-				category_id: categoryItem.category_id
+				color: 'gray'
 			}));
 			var top = (item.memo) ? 12 : 3;
 			var checkbox = Titanium.UI.createButton({
