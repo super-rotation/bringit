@@ -23,7 +23,7 @@ function ApplicationWindow() {
 	});
 	addButton.addEventListener('click', function () {
 		var AddWindow = require('ui/common/AddWindow');
-		var addWindow = new AddWindow('行き先を追加', 'destination');
+		var addWindow = new AddWindow('行き先', 'destination');
 		Titanium.App.navGroup.open(addWindow, {animated: true});
 		Titanium.App.addEventListener('addDestination', function() {
 			Titanium.App.navGroup.close(addWindow, {animated: true});

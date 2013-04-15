@@ -2,6 +2,7 @@
 function FirstView() {
 	var self = Titanium.UI.createTableView({editable: true});
 
+    var conf = require('ui/common/conf');
 	var db = require('database');
 	db.setTable();
 
@@ -11,19 +12,6 @@ function FirstView() {
 			if (destItems[i].checked) checkedNum++;
 		}
 		return checkedNum;
-	};
-
-	var iconMap = {
-		10000: 'airplane',
-		10001: 'automobile',
-		10002: 'home',
-		10003: 'bldg',
-		10004: 'flame',
-		10005: 'heart',
-		10006: 'book',
-		10007: 'camera',
-		10008: 'cart',
-		10009: 'pegman'
 	};
 
 	var refresh = function() {
@@ -59,7 +47,7 @@ function FirstView() {
 				left: 10,
 				width: 30,
 				height: 'auto',
-				backgroundImage: 'image/dark_' + iconMap[destList.icon_id] + '.png',
+				backgroundImage: 'image/dark_' + conf.iconMap[destList.icon_id] + '.png',
 				font:{fontSize: 25, fontWeight: 'bold'}
 			}));
 			if (unfinishedNum === 0　&& checkedNum > 0) {

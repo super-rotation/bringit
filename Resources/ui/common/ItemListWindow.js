@@ -111,7 +111,7 @@ var _checkboxSize = 50;
 	});
 	addButton.addEventListener('click', function () {
 		var AddWindow = require('ui/common/AddWindow');
-		var addWindow = new AddWindow('アイテムを追加', 'item', category_id);
+		var addWindow = new AddWindow('アイテム', 'item', category_id);
 		Titanium.App.navGroup.open(addWindow, {animated: true});
 		Titanium.App.addEventListener('addItem', function() {
 			Titanium.App.navGroup.close(addWindow, {animated: true});
