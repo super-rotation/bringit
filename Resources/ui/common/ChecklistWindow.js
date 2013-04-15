@@ -21,13 +21,14 @@ function ChecklistWindow(destination_id, name) {
 			var checklist = checklists[i];
 			var row = Titanium.UI.createTableViewRow();
 			var item = itemMap[checklist.item_id];
-			row.add(Titanium.UI.createLabel({
+			var label =Titanium.UI.createLabel({
 				text: item.name,
 				top: 10,
 				left: 50,
 				width: 300,
 				height: 'auto'
-			}));
+			});
+			row.add(label);
 			row.destination_id = checklist.destination_id;
 			row.item_id = checklist.item_id;
 			var memo = '';
@@ -35,7 +36,7 @@ function ChecklistWindow(destination_id, name) {
 			if (item.memo.length >= maxLength) {
 				memo = item.memo.substring(0, maxLength) + '...';
 			}
-			row.add(Titanium.UI.createLabel({
+			var grayLabel = Titanium.UI.createLabel({
 				text: memo,
 				top: 30,
 				left: 50,
@@ -43,7 +44,8 @@ function ChecklistWindow(destination_id, name) {
 				height: 'auto',
 				color: 'gray',
 				font: {fontStyle: 'italic'}
-			}));
+			});
+			row.add(grayLabel);
 			var top = (item.memo) ? 12 : 3;
 			var checkbox = Titanium.UI.createButton({
 				title: '',

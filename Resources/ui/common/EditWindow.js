@@ -72,8 +72,19 @@ function editWindow(name, item_id) {
 	view.add(deleteButton);
 
 	deleteButton.addEventListener('click', function() {
-		db.deleteItem(item_id);
-		Titanium.App.fireEvent('editItem');
+		var dialog = Titanium.UI.createAlertDialog({
+			title: 'アイテムの削除',
+			message: '本当に「' + name + '」を削除してもよろしいですか？',
+			buttonNames: ['OK', 'キャンセル'],
+			cancel: 1
+		});
+		dialog.addEventListener('click', function(e) {
+			if (e.index === 0) {
+				db.deleteItem(item_id);
+				Titanium.App.fireEvent('editItem');
+			}
+		});
+		dialog.show();
 	});
 
 	self.add(view);
