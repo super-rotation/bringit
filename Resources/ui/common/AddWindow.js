@@ -19,19 +19,18 @@ function addWindow(title, tableType, id) {
     });
     view.add(textArea);
 
-    var addButton = Titanium.UI.createButton({
-        top: 170,
-        right: 10,
-        width: 100,
-        height: 44,
-        title: '追加'
+    var saveButton = Titanium.UI.createButton({
+        title: '保存',
+        width: 30,
+        height: 20
     });
-    view.add(addButton);
+    self.rightNavButton = saveButton;
 
-    addButton.addEventListener('click', function() {
+    saveButton.addEventListener('click', function() {
         if (textArea.value) {
             if (tableType === 'destination') {
-                db.addDestination(textArea.value);
+                var icon_id = 10000;
+                db.addDestination(textArea.value, icon_id);
                 Titanium.App.fireEvent('addDestination');
             }
             else if (tableType === 'item') {

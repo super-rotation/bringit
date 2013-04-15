@@ -14,7 +14,7 @@ function FirstView() {
 	};
 
 	var iconMap = {
-		10000: 'airplain',
+		10000: 'airplane',
 		10001: 'automobile',
 		10002: 'home',
 		10003: 'bldg',
@@ -69,7 +69,7 @@ function FirstView() {
 					left: 230,
 					width: 30,
 					height: 'auto',
-					backgroundImage: 'dark_check.png',
+					backgroundImage: 'image/dark_check.png',
 					font:{fontSize: 25, fontWeight: 'bold'}
 				}));
 			}

@@ -613,12 +613,12 @@ exports.updateCheckedStatus = function(destination_id, item_id) {
 	return true;
 };
 
-exports.addDestination = function(destinationName) {
+exports.addDestination = function(destination_name, icon_id) {
 	this.open();
 	var now = this.getUnixtime();
 	var res = this.db.execute(
-		'INSERT INTO destination (name, created_at, updated_at) VALUES (?, ?, ?)',
-		destinationName, now, now
+		'INSERT INTO destination (icon_id, name, created_at, updated_at) VALUES (?, ?, ?, ?)',
+		icon_id, destination_name, now, now
 	);
 	this.close();
 	return true;
