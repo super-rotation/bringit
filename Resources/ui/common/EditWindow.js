@@ -85,7 +85,7 @@ function editWindow(name, destination_id, item_id) {
 		value: itemObj.memo,
 		height: 90,
 		width: 300,
-		top: 140,
+		top: 136,
 		borderWidth: 2,
 		borderColor: '#bbb',
 		borderRadius: 5,

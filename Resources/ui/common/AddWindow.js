@@ -35,7 +35,8 @@ function addWindow(title, tableType, id) {
             text: 'アイコン',
             height: 35,
             width: 300,
-            top: 120
+            top: 120,
+            font: {fontWeight: 'bold'}
         });
         view.add(iconLabel);
 
