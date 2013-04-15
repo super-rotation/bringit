@@ -98,7 +98,7 @@ var _checkboxSize = 50;
 	tableView.addEventListener('click', function(e) {
 		if (e.x > _checkboxSize) {
 			var EditWindow = require('ui/common/EditWindow');
-			var editWindow = new EditWindow(e.source.text, e.source.item_id);
+			var editWindow = new EditWindow(e.source.text, destination_id, e.source.item_id);
 			Titanium.App.navGroup.open(editWindow, {animated: true});
 			Titanium.App.addEventListener('editItem', function() {
 				Titanium.App.navGroup.close(editWindow, {animated: true});

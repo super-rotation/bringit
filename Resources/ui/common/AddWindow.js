@@ -11,10 +11,11 @@ function addWindow(title, tableType, id) {
     var db = require('database');
 
     var destinationLabel = Titanium.UI.createLabel({
-        text: title,
+        text: title + '名',
         height: 35,
         width: 300,
-        top: 10
+        top: 10,
+        font: {fontWeight: 'bold'}
     });
     view.add(destinationLabel);
 

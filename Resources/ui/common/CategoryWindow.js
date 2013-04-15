@@ -38,7 +38,7 @@ function CategoryWindow(destination_id) {
 	});
 	addButton.addEventListener('click', function () {
 		var AddWindow = require('ui/common/AddWindow');
-		var addWindow = new AddWindow('カテゴリーを追加', 'category');
+		var addWindow = new AddWindow('カテゴリー', 'category');
 			Titanium.App.navGroup.open(addWindow, {animated: true});
 			Titanium.App.addEventListener('addCategory', function() {
 				Titanium.App.navGroup.close(addWindow, {animated: true});
