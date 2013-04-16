@@ -18,11 +18,11 @@ exports.getUnixtime = function() {
 
 exports.setTable = function() {
 	this.open();
-	// this.db.execute('DROP TABLE destination');
-	// this.db.execute('DROP TABLE destination_item');
-	// this.db.execute('DROP TABLE item');
-	// this.db.execute('DROP TABLE category');
-	// this.db.execute('DROP TABLE category_item');
+	this.db.execute('DROP TABLE IF EXISTS destination');
+	this.db.execute('DROP TABLE IF EXISTS destination_item');
+	this.db.execute('DROP TABLE IF EXISTS item');
+	this.db.execute('DROP TABLE IF EXISTS category');
+	this.db.execute('DROP TABLE IF EXISTS category_item');
 	this.db.execute(
 		'CREATE TABLE IF NOT EXISTS destination ('
 		+ 'destination_id INTEGER PRIMARY KEY AUTOINCREMENT,'
@@ -42,6 +42,9 @@ exports.setTable = function() {
 		+ 'created_at INTEGER NOT NULL,'
 		+ 'updated_at INTEGER NOT NULL,'
 		+ 'PRIMARY KEY (destination_id, item_id))'
+	);
+	this.db.execute(
+		'CREATE INDEX di_item_id ON destination_item (item_id)'
 	);
 	this.close();
 	this.insertInitialDestinationItem();
@@ -73,7 +76,11 @@ exports.setTable = function() {
 		+ 'category_id INTEGER,'
 		+ 'item_id INTEGER,'
 		+ 'created_at INTEGER NOT NULL,'
-		+ 'updated_at INTEGER NOT NULL)'
+		+ 'updated_at INTEGER NOT NULL,'
+		+ 'PRIMARY KEY (category_id, item_id))'
+	);
+	this.db.execute(
+		'CREATE INDEX ci_item_id ON category_item (item_id)'
 	);
 	this.close();
 	this.insertInitialCategoryItem();
