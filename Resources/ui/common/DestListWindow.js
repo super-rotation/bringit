@@ -1,12 +1,15 @@
 //FirstView Component Constructor
-function FirstView() {
-	var self = Titanium.UI.createTableView({editable: true});
+function DestListWindow() {
+	var self = Titanium.UI.createWindow({
+		title: '行き先'
+	});
+	var tableView = Titanium.UI.createTableView({editable: true});
 
-    var conf = require('ui/common/conf');
+	var conf = require('ui/common/conf');
 	var db = require('database');
 	db.setTable();
 
-	var checkCheckedNum = function (destItems) {
+	var checkCheckedNum = function(destItems) {
 		var checkedNum = 0;
 		for (var i = 0; i < destItems.length; i++) {
 			if (destItems[i].checked) checkedNum++;
@@ -15,9 +18,9 @@ function FirstView() {
 	};
 
 	var refresh = function() {
-		self.data = null;
+		tableView.data = null;
 		var destLists = db.selectAllDestination();
-		self.dest_lists = destLists;
+		tableView.dest_lists = destLists;
 		for (var i=0; i<destLists.length; i++) {
 			var destList = destLists[i];
 			var destItems = db.selectDestinationItemById(destList.destination_id);
@@ -61,26 +64,38 @@ function FirstView() {
 					font:{fontSize: 25, fontWeight: 'bold'}
 				}));
 			}
-			self.appendRow(row);
+			tableView.appendRow(row);
 		}
 	};
 
+	tableView.addEventListener('click', function(e) {
+		var ChecklistWindow = require('ui/common/ChecklistWindow');
+		var list = tableView.dest_lists[e.index];
+		var checklistWindow = new ChecklistWindow(list.destination_id, list.name);
+		Titanium.App.destination_id = list.destination_id;
+		Titanium.App.fireEvent('selectDestination');
+		checklistWindow.containingTab = self.containingTab;
+		self.containingTab.open(checklistWindow);
+	});
+
 	Titanium.App.addEventListener('addDestination', function(data) {
-		refresh(self);
+		refresh(tableView);
 	});
 
 	Titanium.App.addEventListener('updateCheckbox', function(data) {
-		refresh(self);
+		refresh(tableView);
 	});
 
-	self.addEventListener('delete', function(e) {
+	tableView.addEventListener('delete', function(e) {
 		db.deleteDestination(e.row.destination_id);
-		refresh(self);
+		refresh(tableView);
 	});
 
-	refresh(self);
+	self.add(tableView);
+
+	refresh(tableView);
 
 	return self;
 }
 
-module.exports = FirstView;
+module.exports = DestListWindow;

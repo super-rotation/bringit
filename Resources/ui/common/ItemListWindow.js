@@ -1,7 +1,7 @@
-function ItemListWindow(category_id, name, destination_id) {
+function ItemListWindow(category_id, category_name, destination_name, destination_id) {
 	var self = Titanium.UI.createWindow({
 			category_id: category_id,
-			title: name
+			title: destination_name + ' ' + category_name
 	});
 	var tableView = Titanium.UI.createTableView({editable: true});
 
@@ -99,9 +99,10 @@ var _checkboxSize = 50;
 		if (e.x > _checkboxSize) {
 			var EditWindow = require('ui/common/EditWindow');
 			var editWindow = new EditWindow(e.source.text, destination_id, e.source.item_id);
-			Titanium.App.navGroup.open(editWindow, {animated: true});
+			editWindow.containingTab = self.containingTab;
+			self.containingTab.open(editWindow, {animated: true});
 			Titanium.App.addEventListener('editItem', function() {
-				Titanium.App.navGroup.close(editWindow, {animated: true});
+				self.containingTab.close(editWindow, {animated: true});
 			});
 		}
 	}) ;
@@ -112,9 +113,10 @@ var _checkboxSize = 50;
 	addButton.addEventListener('click', function () {
 		var AddWindow = require('ui/common/AddWindow');
 		var addWindow = new AddWindow('アイテム', 'item', category_id);
-		Titanium.App.navGroup.open(addWindow, {animated: true});
+		addWindow.containingTab = self.containingTab;
+		self.containingTab.open(addWindow, {animated: true});
 		Titanium.App.addEventListener('addItem', function() {
-			Titanium.App.navGroup.close(addWindow, {animated: true});
+			self.containingTab.close(addWindow, {animated: true});
 		});
 	});
 	self.rightNavButton = addButton;

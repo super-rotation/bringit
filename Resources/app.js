@@ -42,5 +42,7 @@ if (Ti.version < 1.8 ) {
 		}
 	}
 
-	new Window().open({transition: Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
+	var ApplicationTabGroup = require('ui/common/ApplicationTabGroup');
+	new ApplicationTabGroup().open({transition: Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
+	// new Window().open({transition: Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT});
 })();

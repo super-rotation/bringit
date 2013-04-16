@@ -96,16 +96,6 @@ function ChecklistWindow(destination_id, name) {
 		refresh();
 	});
 
-	var addItemButton = Ti.UI.createButton({
-		systemButton: Titanium.UI.iPhone.SystemButton.ADD
-	});
-	addItemButton.addEventListener('click', function () {
-		var CategoryWindow = require('ui/common/CategoryWindow');
-		var categoryWindow = new CategoryWindow(destination_id);
-		Titanium.App.navGroup.open(categoryWindow);
-	});
-	self.rightNavButton = addItemButton;
-
 	Titanium.App.addEventListener('updateItemStatus', function(data) {
 		refresh();
 	});

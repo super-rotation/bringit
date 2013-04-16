@@ -1,11 +1,10 @@
-function CategoryWindow(destination_id) {
+function CategoryWindow() {
+	var db = require('database');
 	 var self = Ti.UI.createWindow({
-			title: '追加アイテム選択',
+			title: 'アイテム選択',
 			backgroundColor: '#fff'
 	});
 	var tableView = Titanium.UI.createTableView();
-
-	var db = require('database');
 
 	var categories = [];
 	var refresh = function() {
@@ -23,14 +22,19 @@ function CategoryWindow(destination_id) {
 			}));
 			tableView.appendRow(row);
 		}
+		tableView.destination_id = Titanium.App.destination_id;
+		var destObj = db.selectDestinationById(tableView.destination_id);
+		tableView.destination_name = destObj.name;
+		self.title = destObj.name + ' アイテム選択';
 	};
 
 	tableView.addEventListener('click', function(e) {
 		var category_id = categories[e.index].category_id;
 		var category_name = categories[e.index].name;
 		var ItemListWindow = require ('ui/common/ItemListWindow');
-		var itemListWindow = new ItemListWindow(category_id, category_name, destination_id);
-		Titanium.App.navGroup.open(itemListWindow);
+		var itemListWindow = new ItemListWindow(category_id, category_name, tableView.destination_name, tableView.destination_id);
+		itemListWindow.containingTab = self.containingTab;
+		self.containingTab.open(itemListWindow);
 	});
 
 	var addButton = Ti.UI.createButton({
@@ -39,14 +43,18 @@ function CategoryWindow(destination_id) {
 	addButton.addEventListener('click', function () {
 		var AddWindow = require('ui/common/AddWindow');
 		var addWindow = new AddWindow('カテゴリー', 'category');
-			Titanium.App.navGroup.open(addWindow, {animated: true});
+		addWindow.containingTab = self.containingTab;
+		self.containingTab.open(addWindow, {animated: true});
 			Titanium.App.addEventListener('addCategory', function() {
-				Titanium.App.navGroup.close(addWindow, {animated: true});
+				self.containingTab.close(addWindow, {animated: true});
 			});
 	});
 	self.rightNavButton = addButton;
 
 	Titanium.App.addEventListener('addCategory', function() {
+		refresh();
+	});
+	Titanium.App.addEventListener('selectDestination', function() {
 		refresh();
 	});
 

@@ -459,9 +459,7 @@ exports.insertInitialCategoryItem = function() {
 	return true;
 };
 
-exports.selectAllDestination = function() {
-	this.open();
-	var rows = this.db.execute('SELECT * FROM destination ORDER BY created_at');
+exports.setDestObj = function(rows) {
 	var res = [];
 	while (rows.isValidRow()) {
 		var destObj = {};
@@ -473,9 +471,25 @@ exports.selectAllDestination = function() {
 		res.push(destObj);
 		rows.next();
 	}
+	return res;
+};
+
+exports.selectAllDestination = function() {
+	this.open();
+	var rows = this.db.execute('SELECT * FROM destination ORDER BY created_at');
+	var res = this.setDestObj(rows);
 	rows.close();
 	this.close();
 	return res;
+};
+
+exports.selectDestinationById = function(destination_id) {
+	this.open()
+	var rows = this.db.execute('SELECT * FROM destination WHERE destination_id = ?', destination_id);
+	var res = this.setDestObj(rows);
+	rows.close();
+	this.close();
+	return res[0];
 };
 
 exports.setDestItemObj = function(rows){
