@@ -1,4 +1,4 @@
-function addWindow(title, tableType, id) {
+function AddWindow(title, tableType, id) {
     var self = Titanium.UI.createWindow({
         title: title + 'を追加',
         backgroundColor: '#fff'
@@ -103,4 +103,4 @@ function addWindow(title, tableType, id) {
     return self;
 }
 
-module.exports = addWindow;
+module.exports = AddWindow;

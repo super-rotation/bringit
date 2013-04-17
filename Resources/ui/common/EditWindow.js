@@ -1,4 +1,4 @@
-function editWindow(name, destination_id, item_id) {
+function EditWindow(name, destination_id, item_id) {
 	var self = Titanium.UI.createWindow({
 		title: name,
 		backgroundColor: '#fff'
@@ -145,4 +145,4 @@ function editWindow(name, destination_id, item_id) {
 	return self;
 }
 
-module.exports = editWindow;
+module.exports = EditWindow;

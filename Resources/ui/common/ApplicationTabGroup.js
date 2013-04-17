@@ -6,10 +6,8 @@ function ApplicationTabGroup() {
 	var destListWindow = new DestListWindow();
 	var CategoryWindow = require('ui/common/CategoryWindow');
 	var categoryWindow = new CategoryWindow();
-	var configWindow = Titanium.UI.createWindow({
-		title: 'config',
-		backgroundColor: 'white'
-	});
+	var ConfigWindow = require('ui/common/ConfigWindow');
+	var configWindow = new ConfigWindow();
 
 	var destListTab = Titanium.UI.createTab({
 		title: '行き先リスト',
