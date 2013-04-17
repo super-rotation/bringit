@@ -1,7 +1,7 @@
 function ItemListWindow(category_id, category_name, destination_name, destination_id) {
 	var self = Titanium.UI.createWindow({
 			category_id: category_id,
-			title: destination_name + ' ' + category_name
+			title: category_name
 	});
 	var tableView = Titanium.UI.createTableView({editable: true});
 
@@ -11,15 +11,16 @@ function ItemListWindow(category_id, category_name, destination_name, destinatio
 		tableView.data = null;
 		var items = db.selectAllItem();
 		var itemMap = {};
-		for (var i=0; i<items.length; i++) {
+		for (var i = 0; i < items.length; i++) {
 			itemMap[items[i].item_id] = items[i];
 		}
 		var categoryItems = db.selectCategoryItemById(category_id);
 
-		for (var i=0; i<categoryItems.length; i++) {
+		for (var i = 0; i < categoryItems.length; i++) {
 			var categoryItem = categoryItems[i];
 			var item = itemMap[categoryItem.item_id];
-			var row = Titanium.UI.createTableViewRow({item_id: categoryItem.item_id});
+			var headerText = i ? null : ('選択中の行き先：' + destination_name);
+			var row = Titanium.UI.createTableViewRow({item_id: categoryItem.item_id, header: headerText});
 			row.add(Titanium.UI.createLabel({
 				text: item.name,
 				top: 10,

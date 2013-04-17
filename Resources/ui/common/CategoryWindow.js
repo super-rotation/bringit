@@ -1,18 +1,23 @@
 function CategoryWindow() {
 	var db = require('database');
-	 var self = Ti.UI.createWindow({
-			title: 'アイテム選択',
-			backgroundColor: '#fff'
+	var self = Ti.UI.createWindow({
+		title: 'アイテム選択',
+		backgroundColor: '#fff'
 	});
-	var tableView = Titanium.UI.createTableView();
+	var tableView = Titanium.UI.createTableView({});
 
 	var categories = [];
 	var refresh = function() {
 		tableView.data = null;
 		categories = db.selectAllCategory();
-		for (var i=0; i<categories.length; i++) {
+		tableView.destination_id = Titanium.App.destination_id;
+		var destObj = db.selectDestinationById(tableView.destination_id);
+		tableView.destination_name = destObj.name;
+		self.title = 'アイテム選択';
+		for (var i = 0; i < categories.length; i++) {
 			var category = categories[i];
-			var row = Titanium.UI.createTableViewRow({hasChild: true});
+			var headerText = i ? null : ('選択中の行き先：' + destObj.name);
+			var row = Titanium.UI.createTableViewRow({hasChild: true, header: headerText});
 			row.add(Titanium.UI.createLabel({
 				text: category.name,
 				top: 10,
@@ -22,10 +27,6 @@ function CategoryWindow() {
 			}));
 			tableView.appendRow(row);
 		}
-		tableView.destination_id = Titanium.App.destination_id;
-		var destObj = db.selectDestinationById(tableView.destination_id);
-		tableView.destination_name = destObj.name;
-		self.title = destObj.name + ' アイテム選択';
 	};
 
 	tableView.addEventListener('click', function(e) {
@@ -66,6 +67,3 @@ function CategoryWindow() {
 }
 
 module.exports = CategoryWindow;
-
-
-
