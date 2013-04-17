@@ -66,6 +66,24 @@ function DestListWindow() {
 			}
 			tableView.appendRow(row);
 		}
+		// var row = Titanium.UI.createTableViewRow({});
+		// row.add(Titanium.UI.createLabel({
+		// 	text: '行き先を追加',
+		// 	top: 10,
+		// 	left: 110,
+		// 	width: 300,
+		// 	height: 'auto'
+		// }));
+		// row.add(Titanium.UI.createButton({
+		// 	title: '',
+		// 	top: 6,
+		// 	left: 70,
+		// 	width: 30,
+		// 	height: 'auto',
+		// 	backgroundImage: 'image/light_add.png',
+		// 	font:{fontSize: 25, fontWeight: 'bold'}
+		// }));
+		// tableView.appendRow(row);
 	};
 
 	tableView.addEventListener('click', function(e) {
@@ -77,6 +95,20 @@ function DestListWindow() {
 		checklistWindow.containingTab = self.containingTab;
 		self.containingTab.open(checklistWindow);
 	});
+
+	var addButton = Ti.UI.createButton({
+		systemButton: Titanium.UI.iPhone.SystemButton.ADD
+	});
+	addButton.addEventListener('click', function () {
+		var AddWindow = require('ui/common/AddWindow');
+		var addWindow = new AddWindow('行き先', 'destination');
+		addWindow.containingTab = self.containingTab;
+		self.containingTab.open(addWindow, {animated: true});
+		Titanium.App.addEventListener('addDestination', function() {
+			self.containingTab.close(addWindow, {animated: true});
+		});
+	});
+	self.rightNavButton = addButton;
 
 	Titanium.App.addEventListener('addDestination', function(data) {
 		refresh(tableView);
