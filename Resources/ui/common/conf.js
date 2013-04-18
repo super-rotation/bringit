@@ -7,7 +7,7 @@ exports.iconMap = {
 	10005: 'heart',
 	10006: 'book',
 	10007: 'camera',
-	10008: 'cart',
+	10008: 'star',
 	10009: 'pegman'
 };
 

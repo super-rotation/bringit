@@ -2,7 +2,7 @@ var _dbName = 'bringitdb';
 var _initialDestinationId = 10000;
 var _initialItemId = 10000;
 var _initialCategoryId = 10000;
-var _initialItemNum = 133;
+var _initialItemNum = 138;
 
 exports.open = function(){
 	this.db = Titanium.Database.open(_dbName);
@@ -98,8 +98,8 @@ exports.insertInitialDestination = function(){
 		'INSERT INTO destination (destination_id, icon_id, name, created_at, updated_at)'
 		+ ' VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)',
 		_initialDestinationId    , 10002, '実家（サンプル）', now, now,
-		_initialDestinationId + 1, 10004, 'キャンプ（サンプル）', now, now,
-		_initialDestinationId + 2, 10007, '聖地巡礼（サンプル）', now, now
+		_initialDestinationId + 1, 10004, 'ロサンゼルス（サンプル）', now, now,
+		_initialDestinationId + 2, 10007, '天体観測（サンプル）', now, now
 	);
 	this.close();
 	return true;
@@ -113,13 +113,50 @@ exports.insertInitialDestinationItem = function() {
 		return true;
 	}
 	var now = this.getUnixtime();
+	var questions = '(?, ?, ?, ?, ?)';
+	for (var i = 0; i < 36; i++) {
+		questions += ', (?, ?, ?, ?, ?)';
+	}
 	var res = this.db.execute(
 		'INSERT INTO destination_item (destination_id, item_id, checked, created_at, updated_at)'
-		+ ' VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)',
-		_initialDestinationId    , _initialItemId    , 0, now, now,
+		+ ' VALUES ' + questions,
 		_initialDestinationId    , _initialItemId + 1, 0, now, now,
-		_initialDestinationId    , _initialItemId + 2, 0, now, now,
-		_initialDestinationId + 1, _initialItemId + 3, 0, now, now
+		_initialDestinationId    , _initialItemId + 100, 0, now, now,
+		_initialDestinationId    , _initialItemId + 104, 0, now, now,
+		_initialDestinationId    , _initialItemId + 105, 0, now, now,
+		_initialDestinationId    , _initialItemId + 109, 0, now, now,
+		_initialDestinationId    , _initialItemId + 305, 0, now, now,
+		_initialDestinationId    , _initialItemId + 306, 0, now, now,
+		_initialDestinationId    , _initialItemId + 314, 0, now, now,
+		_initialDestinationId    , _initialItemId + 315, 0, now, now,
+		_initialDestinationId    , _initialItemId + 322, 0, now, now,
+		_initialDestinationId    , _initialItemId + 804, 0, now, now,
+		_initialDestinationId + 1, _initialItemId, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 1, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 2, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 6, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 7, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 8, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 100, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 109, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 113, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 200, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 226, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 310, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 314, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 323, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 331, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 500, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 717, 0, now, now,
+		_initialDestinationId + 2, _initialItemId + 114, 0, now, now,
+		_initialDestinationId + 2, _initialItemId + 117, 0, now, now,
+		_initialDestinationId + 2, _initialItemId + 316, 0, now, now,
+		_initialDestinationId + 2, _initialItemId + 319, 0, now, now,
+		_initialDestinationId + 2, _initialItemId + 328, 0, now, now,
+		_initialDestinationId + 2, _initialItemId + 601, 0, now, now,
+		_initialDestinationId + 2, _initialItemId + 606, 0, now, now,
+		_initialDestinationId + 2, _initialItemId + 609, 0, now, now,
+		_initialDestinationId + 2, _initialItemId + 610, 0, now, now
 	);
 	this.close();
 	return true;
@@ -196,39 +233,41 @@ exports.insertInitialItem = function() {
 		_initialItemId + 224, '綿棒', '',
 		_initialItemId + 225, 'デオドラント', '',
 		_initialItemId + 226, '日焼け止め', '',
-		_initialItemId + 300, 'ジャケット', '',
-		_initialItemId + 301, 'パーカー', '',
-		_initialItemId + 302, 'トレーナー', '',
-		_initialItemId + 303, 'シャツ', '',
-		_initialItemId + 304, 'Tシャツ', '',
-		_initialItemId + 305, 'ズボン', '',
-		_initialItemId + 306, 'スーツ', '',
-		_initialItemId + 307, 'ドレス', '',
-		_initialItemId + 308, 'ワンピース', '',
-		_initialItemId + 309, 'ブラウス', '',
-		_initialItemId + 310, '運動着', '',
-		_initialItemId + 311, 'パジャマ', '',
-		_initialItemId + 312, '下着', '',
-		_initialItemId + 313, '靴下', '',
-		_initialItemId + 314, '帽子', '',
-		_initialItemId + 315, 'ネクタイ', '',
-		_initialItemId + 316, 'ベルト', '',
-		_initialItemId + 317, 'コート', '',
-		_initialItemId + 318, 'マフラー', '',
-		_initialItemId + 319, 'スカーフ', '',
-		_initialItemId + 320, 'メガネ', '',
-		_initialItemId + 321, 'サングラス', '',
-		_initialItemId + 322, 'メガネケース', '',
-		_initialItemId + 323, 'ピアス', '',
-		_initialItemId + 324, 'イヤリング', '',
-		_initialItemId + 325, '腕時計', '',
-		_initialItemId + 326, '手袋', '',
-		_initialItemId + 327, '靴', '',
-		_initialItemId + 328, 'ハイヒール', '',
-		_initialItemId + 329, 'サンダル', '',
-		_initialItemId + 330, 'スリッパ', '',
-		_initialItemId + 331, 'レインコート', '',
-		_initialItemId + 332, '傘', '',
+		_initialItemId + 300, '上着', '',
+		_initialItemId + 301, 'ジャケット', '',
+		_initialItemId + 302, 'パーカー', '',
+		_initialItemId + 303, 'トレーナー', '',
+		_initialItemId + 304, 'シャツ', '',
+		_initialItemId + 305, 'Tシャツ', '',
+		_initialItemId + 306, 'ズボン', '',
+		_initialItemId + 307, '半ズボン', '',
+		_initialItemId + 308, 'スーツ', '',
+		_initialItemId + 309, 'ドレス', '',
+		_initialItemId + 310, 'ワンピース', '',
+		_initialItemId + 311, 'ブラウス', '',
+		_initialItemId + 312, '運動着', '',
+		_initialItemId + 313, 'パジャマ', '',
+		_initialItemId + 314, '下着', '',
+		_initialItemId + 315, '靴下', '',
+		_initialItemId + 316, '帽子', '',
+		_initialItemId + 317, 'ネクタイ', '',
+		_initialItemId + 318, 'ベルト', '',
+		_initialItemId + 319, 'コート', '',
+		_initialItemId + 320, 'マフラー', '',
+		_initialItemId + 321, 'スカーフ', '',
+		_initialItemId + 322, 'メガネ', '',
+		_initialItemId + 323, 'サングラス', '',
+		_initialItemId + 324, 'メガネケース', '',
+		_initialItemId + 325, 'ピアス', '',
+		_initialItemId + 326, 'イヤリング', '',
+		_initialItemId + 327, '腕時計', '',
+		_initialItemId + 328, '手袋', '',
+		_initialItemId + 329, '靴', '',
+		_initialItemId + 330, 'ハイヒール', '',
+		_initialItemId + 331, 'サンダル', '',
+		_initialItemId + 332, 'スリッパ', '',
+		_initialItemId + 333, 'レインコート', '',
+		_initialItemId + 334, '傘', '',
 		_initialItemId + 400, 'ノート', '',
 		_initialItemId + 401, 'メモ帳', '',
 		_initialItemId + 402, 'ボールペン', '',
@@ -252,6 +291,8 @@ exports.insertInitialItem = function() {
 		_initialItemId + 606, '懐中電灯', '',
 		_initialItemId + 607, 'ランタン', '',
 		_initialItemId + 608, '虫除け', '',
+		_initialItemId + 609, 'カイロ', '',
+		_initialItemId + 610, '望遠鏡', '',
 		_initialItemId + 700, 'フリスビー', '',
 		_initialItemId + 701, 'スノーボード', '',
 		_initialItemId + 702, 'スノーボードブーツ', '',
@@ -273,7 +314,8 @@ exports.insertInitialItem = function() {
 		_initialItemId + 800, '本', '',
 		_initialItemId + 801, '飲み物', '',
 		_initialItemId + 802, '食べ物', '',
-		_initialItemId + 803, 'ビニール', ''
+		_initialItemId + 803, 'お土産', '',
+		_initialItemId + 804, 'ビニール', ''
 	);
 	this.close();
 	return true;
@@ -409,6 +451,8 @@ exports.insertInitialCategoryItem = function() {
 		_initialCategoryId + 3, _initialItemId + 330, now, now,
 		_initialCategoryId + 3, _initialItemId + 331, now, now,
 		_initialCategoryId + 3, _initialItemId + 332, now, now,
+		_initialCategoryId + 3, _initialItemId + 333, now, now,
+		_initialCategoryId + 3, _initialItemId + 334, now, now,
 		_initialCategoryId + 4, _initialItemId + 400, now, now,
 		_initialCategoryId + 4, _initialItemId + 401, now, now,
 		_initialCategoryId + 4, _initialItemId + 402, now, now,
@@ -429,11 +473,13 @@ exports.insertInitialCategoryItem = function() {
 		_initialCategoryId + 6, _initialItemId + 603, now, now,
 		_initialCategoryId + 6, _initialItemId + 604, now, now,
 		_initialCategoryId + 6, _initialItemId + 605, now, now,
-		_initialCategoryId + 6, _initialItemId + 606, now, now,
 		_initialCategoryId + 6, _initialItemId + 607, now, now,
+		_initialCategoryId + 6, _initialItemId + 606, now, now,
+		_initialCategoryId + 6, _initialItemId + 608, now, now,
+		_initialCategoryId + 6, _initialItemId + 609, now, now,
+		_initialCategoryId + 6, _initialItemId + 610, now, now,
 		_initialCategoryId + 7, _initialItemId + 700, now, now,
 		_initialCategoryId + 7, _initialItemId + 701, now, now,
-		_initialCategoryId + 6, _initialItemId + 608, now, now,
 		_initialCategoryId + 7, _initialItemId + 702, now, now,
 		_initialCategoryId + 7, _initialItemId + 703, now, now,
 		_initialCategoryId + 7, _initialItemId + 704, now, now,
@@ -453,7 +499,8 @@ exports.insertInitialCategoryItem = function() {
 		_initialCategoryId + 8, _initialItemId + 800, now, now,
 		_initialCategoryId + 8, _initialItemId + 801, now, now,
 		_initialCategoryId + 8, _initialItemId + 802, now, now,
-		_initialCategoryId + 8, _initialItemId + 803, now, now
+		_initialCategoryId + 8, _initialItemId + 803, now, now,
+		_initialCategoryId + 8, _initialItemId + 804, now, now
 	);
 	this.close();
 	return true;
