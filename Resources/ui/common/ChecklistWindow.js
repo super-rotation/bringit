@@ -30,10 +30,11 @@ function ChecklistWindow(destination_id, name) {
 			var item = itemMap[checklist.item_id];
 			var label =Titanium.UI.createLabel({
 				text: item.name,
-				top: 10,
+				top: 5,
 				left: 50,
 				width: 300,
-				height: 'auto'
+				height: 'auto',
+				verticalAlign: 'middle'
 			});
 			row.add(label);
 			row.destination_id = checklist.destination_id;
@@ -53,7 +54,7 @@ function ChecklistWindow(destination_id, name) {
 				font: {fontStyle: 'italic'}
 			});
 			row.add(grayLabel);
-			var top = (item.memo) ? 12 : 3;
+			var top = (item.memo) ? 10 : 0;
 			var checkbox = Titanium.UI.createButton({
 				title: '',
 				top: top,

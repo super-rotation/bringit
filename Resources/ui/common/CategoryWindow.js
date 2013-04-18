@@ -20,10 +20,10 @@ function CategoryWindow() {
 			var row = Titanium.UI.createTableViewRow({hasChild: true, header: headerText});
 			row.add(Titanium.UI.createLabel({
 				text: category.name,
-				top: 10,
+				top: 0,
 				left: 10,
 				width: 300,
-				height: 'auto'
+				height: 30
 			}));
 			tableView.appendRow(row);
 		}

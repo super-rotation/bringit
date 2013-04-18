@@ -21,7 +21,7 @@ function ItemListWindow(category_id, category_name, destination_name, destinatio
 			var row = Titanium.UI.createTableViewRow({item_id: categoryItem.item_id, header: headerText});
 			row.add(Titanium.UI.createLabel({
 				text: item.name,
-				top: 10,
+				top: 5,
 				left: 50,
 				width: 300,
 				height: 'auto',
