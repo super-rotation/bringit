@@ -92,14 +92,12 @@ function ItemListWindow(category_id, category_name) {
 				style: Titanium.UI.iPhone.SystemButton.INFO_DARK,
 				right: 15,
 				bubbleParent: false,
-				name: row.text,
+				name: item.name,
 				item_id: categoryItem.item_id,
 				bubbleParent: false
 			});
 			row.add(infoButton);
 			infoButton.addEventListener('click', function(e) {
-				Ti.API.debug('------ infoButton ------');
-				Ti.API.debug(e);
 				var EditItemWindow = require('ui/common/EditItemWindow');
 				var editItemWindow = new EditItemWindow(e.source.name, destination_id, e.source.item_id);
 				editItemWindow.containingTab = self.containingTab;
