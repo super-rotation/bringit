@@ -21,16 +21,16 @@ function ApplicationTabGroup() {
 		window: categoryWindow
 	});
 	categoryWindow.containingTab = categoryTab;
-	var configTab = Ti.UI.createTab({
-		title: '設定',
-		icon: '/image/tab_light_gear.png',
-		window: configWindow
-	});
-	configWindow.containingTab = configTab;
+	// var configTab = Ti.UI.createTab({
+	// 	title: '設定',
+	// 	icon: '/image/tab_light_gear.png',
+	// 	window: configWindow
+	// });
+	// configWindow.containingTab = configTab;
 
 	self.addTab(destListTab);
 	self.addTab(categoryTab);
-	self.addTab(configTab);
+	// self.addTab(configTab);
 
 	return self;
 }
