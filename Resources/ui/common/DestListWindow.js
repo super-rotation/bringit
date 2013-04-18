@@ -51,39 +51,36 @@ function DestListWindow() {
 				width: 30,
 				height: 'auto',
 				backgroundImage: 'image/dark_' + conf.iconMap[destList.icon_id] + '.png',
-				font:{fontSize: 25, fontWeight: 'bold'}
+				font: {fontSize: 25, fontWeight: 'bold'}
 			}));
+			var infoButton = Titanium.UI.createButton({
+				style: Titanium.UI.iPhone.SystemButton.INFO_DARK,
+				right: 15,
+				bubbleParent: false
+			});
+			row.add(infoButton);
+			infoButton.addEventListener('click', function() {
+				var EditDestinationWindow = require('ui/common/EditDestinationWindow');
+				var editDestinationWindow = new EditDestinationWindow(destList.name);
+				editDestinationWindow.containingTab = self.containingTab;
+				self.containingTab.open(editDestinationWindow, {animated: true});
+				Titanium.App.addEventListener('editItem', function() {
+					self.containingTab.close(editDestinationWindow, {animated: true});
+				});
+			});
 			if (unfinishedNum === 0　&& checkedNum > 0) {
 				row.add(Titanium.UI.createButton({
 					title: '',
-					top: 12,
-					left: 230,
-					width: 30,
-					height: 'auto',
+					top: 15,
+					right: 45,
+					width: 20,
+					height: 20,
 					backgroundImage: 'image/dark_check.png',
-					font:{fontSize: 25, fontWeight: 'bold'}
+					font: {fontSize: 25, fontWeight: 'bold'}
 				}));
 			}
 			tableView.appendRow(row);
 		}
-		// var row = Titanium.UI.createTableViewRow({});
-		// row.add(Titanium.UI.createLabel({
-		// 	text: '行き先を追加',
-		// 	top: 10,
-		// 	left: 110,
-		// 	width: 300,
-		// 	height: 'auto'
-		// }));
-		// row.add(Titanium.UI.createButton({
-		// 	title: '',
-		// 	top: 6,
-		// 	left: 70,
-		// 	width: 30,
-		// 	height: 'auto',
-		// 	backgroundImage: 'image/light_add.png',
-		// 	font:{fontSize: 25, fontWeight: 'bold'}
-		// }));
-		// tableView.appendRow(row);
 	};
 
 	tableView.addEventListener('click', function(e) {

@@ -54,7 +54,8 @@ function ItemListWindow(category_id, category_name, destination_name, destinatio
 				color: '#fff',
 				font: {fontSize: 25, fontWeight: 'bold'},
 				value: false, //value is a custom property in this casehere.
-				item_id: categoryItem.item_id
+				item_id: categoryItem.item_id,
+				bubbleParent: false
 			});
 			checkbox.on = function() {
 				this.backgroundImage = 'image/dark_case.png';
@@ -81,7 +82,28 @@ function ItemListWindow(category_id, category_name, destination_name, destinatio
 				}
 				Titanium.App.fireEvent('updateItemStatus');
 			});
+			row.checkbox = checkbox;
 			row.add(checkbox);
+			var infoButton = Titanium.UI.createButton({
+				style: Titanium.UI.iPhone.SystemButton.INFO_DARK,
+				right: 15,
+				bubbleParent: false,
+				name: row.text,
+				item_id: categoryItem.item_id,
+				bubbleParent: false
+			});
+			row.add(infoButton);
+			infoButton.addEventListener('click', function(e) {
+				Ti.API.debug('------ infoButton ------');
+				Ti.API.debug(e);
+				var EditItemWindow = require('ui/common/EditItemWindow');
+				var editItemWindow = new EditItemWindow(e.source.name, destination_id, e.source.item_id);
+				editItemWindow.containingTab = self.containingTab;
+				self.containingTab.open(editItemWindow, {animated: true});
+				Titanium.App.addEventListener('editItem', function() {
+					self.containingTab.close(editItemWindow, {animated: true});
+				});
+			});
 			tableView.appendRow(row);
 		}
 	};
@@ -92,17 +114,14 @@ function ItemListWindow(category_id, category_name, destination_name, destinatio
 		Titanium.App.fireEvent('deleteItem');
 	});
 
-var _checkboxSize = 50;
-
 	tableView.addEventListener('click', function(e) {
-		if (e.x > _checkboxSize) {
-			var EditWindow = require('ui/common/EditWindow');
-			var editWindow = new EditWindow(e.source.text, destination_id, e.source.item_id);
-			editWindow.containingTab = self.containingTab;
-			self.containingTab.open(editWindow, {animated: true});
-			Titanium.App.addEventListener('editItem', function() {
-				self.containingTab.close(editWindow, {animated: true});
-			});
+		if(false == e.row.checkbox.value){
+			e.row.checkbox.on();
+			db.addDestinationItem(destination_id, e.row.checkbox.item_id);
+		}
+		else {
+			e.row.checkbox.off();
+			db.deleteDestinationItem(destination_id, e.row.checkbox.item_id);
 		}
 	}) ;
 

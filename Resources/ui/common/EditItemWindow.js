@@ -1,4 +1,4 @@
-function EditWindow(name, destination_id, item_id) {
+function EditItemWindow(name, destination_id, item_id) {
 	var self = Titanium.UI.createWindow({
 		title: name,
 		backgroundColor: '#fff'
@@ -58,17 +58,19 @@ function EditWindow(name, destination_id, item_id) {
 		}
 	});
 	view.add(checkbox);
-
-	var textAreaForName = Titanium.UI.createTextArea({
+	var textAreaForName = Titanium.UI.createTextField({
 		value: itemObj.name,
 		height: 35,
 		width: 260,
 		top: 35,
 		left: 50,
+		verticalAlign: 'middle',
 		borderWidth: 2,
 		borderColor: '#bbb',
 		borderRadius: 5,
-		font: {fontSize: 16}
+		font: {fontSize: 16},
+		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+		clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ALWAYS
 	});
 	view.add(textAreaForName);
 
@@ -89,7 +91,7 @@ function EditWindow(name, destination_id, item_id) {
 		borderWidth: 2,
 		borderColor: '#bbb',
 		borderRadius: 5,
-		font: {fontSize: 16}
+		font: {fontSize: 16},
 	});
 	view.add(textAreaForMemo);
 
@@ -145,4 +147,4 @@ function EditWindow(name, destination_id, item_id) {
 	return self;
 }
 
-module.exports = EditWindow;
+module.exports = EditItemWindow;
