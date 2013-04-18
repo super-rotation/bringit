@@ -1,4 +1,4 @@
-function ItemListWindow(category_id, category_name, destination_name, destination_id) {
+function ItemListWindow(category_id, category_name) {
 	var self = Titanium.UI.createWindow({
 			category_id: category_id,
 			title: category_name
@@ -10,6 +10,10 @@ function ItemListWindow(category_id, category_name, destination_name, destinatio
 
 	var refresh = function() {
 		tableView.data = null;
+		var destination_id = Titanium.App.destination_id;
+		tableView.destination_id = destination_id;
+		var destination_name = db.selectDestinationById(destination_id).name;
+		tableView.destination_name = destination_name;
 		var items = db.selectAllItem();
 		var itemMap = util.getMap(items, 'item_id');
 		var categoryItems = db.selectCategoryItemById(category_id);
@@ -117,11 +121,11 @@ function ItemListWindow(category_id, category_name, destination_name, destinatio
 	tableView.addEventListener('click', function(e) {
 		if(false == e.row.checkbox.value){
 			e.row.checkbox.on();
-			db.addDestinationItem(destination_id, e.row.checkbox.item_id);
+			db.addDestinationItem(tableView.destination_id, e.row.checkbox.item_id);
 		}
 		else {
 			e.row.checkbox.off();
-			db.deleteDestinationItem(destination_id, e.row.checkbox.item_id);
+			db.deleteDestinationItem(tableView.destination_id, e.row.checkbox.item_id);
 		}
 	}) ;
 
@@ -143,6 +147,9 @@ function ItemListWindow(category_id, category_name, destination_name, destinatio
 		refresh();
 	});
 	Titanium.App.addEventListener('editItem', function() {
+		refresh();
+	});
+	Titanium.App.addEventListener('selectDestination', function() {
 		refresh();
 	});
 

@@ -565,7 +565,7 @@ exports.selectAllDestinationItem = function(){
 
 exports.selectDestinationItemById = function(destination_id) {
 	this.open();
-	var rows = this.db.execute('SELECT * FROM destination_item WHERE destination_id = ? ORDER BY created_at', destination_id);
+	var rows = this.db.execute('SELECT * FROM destination_item WHERE destination_id = ? ORDER BY item_id', destination_id);
 	var res = this.setDestItemObj(rows);
 	rows.close();
 	this.close();

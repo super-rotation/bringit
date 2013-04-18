@@ -33,7 +33,7 @@ function CategoryWindow() {
 		var category_id = categories[e.index].category_id;
 		var category_name = categories[e.index].name;
 		var ItemListWindow = require ('ui/common/ItemListWindow');
-		var itemListWindow = new ItemListWindow(category_id, category_name, tableView.destination_name, tableView.destination_id);
+		var itemListWindow = new ItemListWindow(category_id, category_name);
 		itemListWindow.containingTab = self.containingTab;
 		self.containingTab.open(itemListWindow);
 	});
