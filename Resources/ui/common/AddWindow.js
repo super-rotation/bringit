@@ -10,25 +10,27 @@ function AddWindow(title, tableType, id) {
     var conf = require('ui/common/conf');
     var db = require('database');
 
-    var destinationLabel = Titanium.UI.createLabel({
+    var label = Titanium.UI.createLabel({
         text: title + '名',
         height: 35,
         width: 300,
         top: 10,
         font: {fontWeight: 'bold'}
     });
-    view.add(destinationLabel);
+    view.add(label);
 
-    var textArea = Titanium.UI.createTextArea({
+    var textField = Titanium.UI.createTextField({
         height: 35,
         width: 300,
         top: 47,
         font: {fontSize: 16},
         borderWidth: 2,
         borderColor: '#bbb',
-        borderRadius: 5
+        borderRadius: 5,
+        borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+        clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ALWAYS
     });
-    view.add(textArea);
+    view.add(textField);
 
     if (tableType === 'destination') {
         var iconLabel = Titanium.UI.createLabel({

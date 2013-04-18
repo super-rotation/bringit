@@ -58,7 +58,7 @@ function EditItemWindow(name, destination_id, item_id) {
 		}
 	});
 	view.add(checkbox);
-	var textAreaForName = Titanium.UI.createTextField({
+	var textFieldForName = Titanium.UI.createTextField({
 		value: itemObj.name,
 		height: 35,
 		width: 260,
@@ -72,7 +72,7 @@ function EditItemWindow(name, destination_id, item_id) {
 		borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
 		clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ALWAYS
 	});
-	view.add(textAreaForName);
+	view.add(textFieldForName);
 
 	var memoLabel = Titanium.UI.createLabel({
 		text: 'メモ',
