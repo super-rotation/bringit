@@ -14,3 +14,11 @@ exports.getMinKey = function(array) {
 	}
 	return Number(minKey);
 };
+
+exports.getMap = function(array, idName) {
+	var map = {};
+	for (var i = 0; i < array.length; i++) {
+		map[array[i][idName]] = array[i];
+	}
+	return map;
+};

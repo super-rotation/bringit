@@ -7,19 +7,26 @@ function ChecklistWindow(destination_id, name) {
 	var tableView = Titanium.UI.createTableView({editable: true});
 
 	var db = require('database');
+	var util = require('ui/common/util');
 
 	var refresh = function() {
 		tableView.data = null;
 		var checklists = db.selectDestinationItemById(destination_id);
 		var items = db.selectAllItem();
-		var itemMap = {};
-		for (var i=0; i<items.length; i++) {
-			itemMap[items[i].item_id] = items[i];
-		}
-
-		for (var i=0; i<checklists.length; i++) {
+		var itemMap = util.getMap(items, 'item_id');
+		var categories = db.selectAllCategory();
+		var categoryMap = util.getMap(categories, 'category_id');
+		var categoryItems = db.selectAllCategoryItem();
+		var categoryItemMap = util.getMap(categoryItems, 'item_id');
+		var previous_category_id = null;
+		for (var i = 0; i < checklists.length; i++) {
 			var checklist = checklists[i];
-			var row = Titanium.UI.createTableViewRow();
+			var category_id = categoryItemMap[checklist.item_id].category_id;
+			var headerText = null;
+			if (category_id !== previous_category_id) {
+				headerText = categoryMap[category_id].name;
+			}
+			var row = Titanium.UI.createTableViewRow({header: headerText});
 			var item = itemMap[checklist.item_id];
 			var label =Titanium.UI.createLabel({
 				text: item.name,
@@ -87,6 +94,7 @@ function ChecklistWindow(destination_id, name) {
 			});
 			row.add(checkbox);
 			tableView.appendRow(row);
+			previous_category_id = category_id;
 		}
 	};
 	self.add(tableView);

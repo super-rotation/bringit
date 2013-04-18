@@ -130,7 +130,7 @@ exports.insertInitialDestinationItem = function() {
 		_initialDestinationId    , _initialItemId + 314, 0, now, now,
 		_initialDestinationId    , _initialItemId + 315, 0, now, now,
 		_initialDestinationId    , _initialItemId + 322, 0, now, now,
-		_initialDestinationId    , _initialItemId + 804, 0, now, now,
+		_initialDestinationId    , _initialItemId + 803, 0, now, now,
 		_initialDestinationId + 1, _initialItemId, 0, now, now,
 		_initialDestinationId + 1, _initialItemId + 1, 0, now, now,
 		_initialDestinationId + 1, _initialItemId + 2, 0, now, now,
@@ -138,7 +138,7 @@ exports.insertInitialDestinationItem = function() {
 		_initialDestinationId + 1, _initialItemId + 7, 0, now, now,
 		_initialDestinationId + 1, _initialItemId + 8, 0, now, now,
 		_initialDestinationId + 1, _initialItemId + 100, 0, now, now,
-		_initialDestinationId + 1, _initialItemId + 109, 0, now, now,
+		_initialDestinationId + 1, _initialItemId + 105, 0, now, now,
 		_initialDestinationId + 1, _initialItemId + 113, 0, now, now,
 		_initialDestinationId + 1, _initialItemId + 200, 0, now, now,
 		_initialDestinationId + 1, _initialItemId + 226, 0, now, now,
@@ -556,7 +556,7 @@ exports.setDestItemObj = function(rows){
 
 exports.selectAllDestinationItem = function(){
 	this.open();
-	var rows = this.db.execute('SELECT * FROM destination_item ORDER BY created_at');
+	var rows = this.db.execute('SELECT * FROM destination_item ORDER BY destination_id');
 	var res = this.setDestItemObj(rows);
 	rows.close();
 	this.close();
@@ -642,9 +642,7 @@ exports.selectAllCategory = function() {
 	return res;
 };
 
-exports.selectCategoryItemById = function(category_id) {
-	this.open();
-	var rows = this.db.execute('SELECT * FROM category_item WHERE category_id = ? ORDER BY created_at', category_id);
+exports.setCategoryItemObj = function(rows) {
 	var res = [];
 	while (rows.isValidRow()) {
 		var categoryItemObj = {};
@@ -655,6 +653,23 @@ exports.selectCategoryItemById = function(category_id) {
 		res.push(categoryItemObj);
 		rows.next();
 	}
+	return res;
+};
+
+exports.selectAllCategoryItem = function() {
+	this.open();
+	var rows = this.db.execute('SELECT * FROM category_item');
+	var res = this.setCategoryItemObj(rows);
+	rows.close();
+	this.close();
+	return res;
+};
+
+
+exports.selectCategoryItemById = function(category_id) {
+	this.open();
+	var rows = this.db.execute('SELECT * FROM category_item WHERE category_id = ? ORDER BY created_at', category_id);
+	var res = this.setCategoryItemObj(rows);
 	rows.close();
 	this.close();
 	return res;

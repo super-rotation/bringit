@@ -6,14 +6,12 @@ function ItemListWindow(category_id, category_name, destination_name, destinatio
 	var tableView = Titanium.UI.createTableView({editable: true});
 
 	var db = require('database');
+	var util = require('ui/common/util');
 
 	var refresh = function() {
 		tableView.data = null;
 		var items = db.selectAllItem();
-		var itemMap = {};
-		for (var i = 0; i < items.length; i++) {
-			itemMap[items[i].item_id] = items[i];
-		}
+		var itemMap = util.getMap(items, 'item_id');
 		var categoryItems = db.selectCategoryItemById(category_id);
 
 		for (var i = 0; i < categoryItems.length; i++) {
